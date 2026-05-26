@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Open App Animation</title>
+
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Lottie player (Web Component, simple to drop in) -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+
+    <style>
+        /* ────────────────────────────────────────────────────────
+           OPEN APP — isolated styles for the Lottie splash demo
+           ──────────────────────────────────────────────────────── */
+
+        /* Black curtain that covers the whole device on load and
+           fades out to reveal the standard app gradient. */
+        .open-app-curtain {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border-radius: 32px;
+            background: #000;
+            z-index: 20;
+            pointer-events: none;
+            animation: openAppCurtainFade 1.1s ease-out 0.05s forwards;
+        }
+
+        @keyframes openAppCurtainFade {
+            0%   { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* App container holds the Lottie centered and starts hidden,
+           then gently fades in synced with the curtain. */
+        .open-app-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: openAppContentFade 1.2s ease-out 0.35s forwards;
+        }
+
+        @keyframes openAppContentFade {
+            to { opacity: 1; }
+        }
+
+        .open-app-lottie {
+            /* 4× the original 220px. The Lottie canvas is 1080×1920 with
+               significant transparent padding around the logo, so scaling
+               the player overflows the device frame but the logo art lands
+               at a comfortable hero size. The device-frame's overflow:hidden
+               clips the empty area cleanly. */
+            width: 880px;
+            height: 880px;
+            display: block;
+            pointer-events: none;
+        }
+
+        /* After Lottie finishes, a tiny hint appears suggesting the
+           app is now ready (this only shows once the animation ends). */
+        .open-app-hint {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 56px;
+            display: flex;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+
+        .open-app-hint.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .open-app-hint i {
+            margin-right: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="hf-back-pill" aria-label="Back to handoff">
+        <i class="ph ph-arrow-left"></i>
+        <span>Back to Handoff</span>
+    </a>
+
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <!-- Standard app background layers -->
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <!-- Lottie centered inside the app container -->
+            <div class="app-container open-app-container">
+                <lottie-player
+                    id="openAppLottie"
+                    class="open-app-lottie"
+                    src="new-assets/SplashLogo.json"
+                    background="transparent"
+                    speed="1"
+                    autoplay>
+                </lottie-player>
+            </div>
+
+            <!-- Black fade-in curtain (goes from black → reveal) -->
+            <div class="open-app-curtain"></div>
+
+            <!-- Subtle hint shown once the animation completes -->
+            <div class="open-app-hint" id="openAppHint">
+                <i class="ph ph-arrow-right"></i>
+                <span>App ready</span>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Open App animation</h3>
+            <p>
+                Lottie del logotipo que se reproduce una sola vez al abrir la app.
+                Arranca en negro (fade-in) sobre el fondo estándar y, al terminar,
+                cede el paso a la siguiente pantalla.
+            </p>
+        </div>
+    </div>
+
+    <button class="hf-replay-pill" id="replayBtn" aria-label="Replay open app animation">
+        <i class="ph ph-arrow-clockwise"></i>
+        <span>Replay</span>
+    </button>
+
+    <script>
+        const player = document.getElementById('openAppLottie');
+        const hint = document.getElementById('openAppHint');
+        const replayBtn = document.getElementById('replayBtn');
+
+        // Reveal "App ready" hint once the Lottie finishes its single play
+        player.addEventListener('complete', () => {
+            hint.classList.add('is-visible');
+        });
+
+        // Replay logic: full reload guarantees curtain + lottie reset
+        replayBtn.addEventListener('click', () => {
+            location.reload();
+        });
+    </script>
+</body>
+
+</html>

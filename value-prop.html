@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Value Prop</title>
+
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Lottie player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+
+    <style>
+        /* ────────────────────────────────────────────────────────
+           VALUE PROP SLIDER
+           - 3 slides with a Lottie each (Screen1, Screen2, Screen3)
+           - Lottie spans the full viewport width keeping aspect
+           - Plays once per slide, then freezes on the last frame
+           - Slide indicator (3 dots) + "Continue" CTA
+           ──────────────────────────────────────────────────────── */
+
+        /* Override the global app-bg-gradient animation: this screen
+           uses the same gradient but completely static (no breathing
+           or fade-in) per the brief. */
+        .vp-shell .app-bg-gradient {
+            opacity: 1;
+            animation: none;
+        }
+
+        /* Override the global .app-container fade-in too — the slider
+           manages its own animations and we want a calm, static frame. */
+        .vp-shell .app-container {
+            opacity: 1;
+            animation: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Status bar tweak: keep it floating above the slider */
+        .vp-shell .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            color: var(--text-white);
+            z-index: 50;
+        }
+
+        /* Slider track + viewport — covers the entire app frame so the
+           Lottie can sit edge-to-edge against the device sides. */
+        .vp-viewport {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .vp-track {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            transform: translate3d(0, 0, 0);
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            will-change: transform;
+        }
+
+        .vp-slide {
+            flex: 0 0 33.3333%;
+            width: 33.3333%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Lottie spans the full width of the frame and uses the source
+           file's native aspect ratio (1004:2178) so the artwork lands
+           flush against both side edges of the phone — no transparent
+           letterboxing. The natural height ends up just under the frame
+           height, which is what we want. */
+        .vp-lottie {
+            width: 100%;
+            aspect-ratio: 1004 / 2178;
+            height: auto;
+            display: block;
+            flex: none;
+        }
+
+        /* Bottom controls — absolute over the Lottie's lower area so the
+           animation can keep touching the side edges without being
+           pushed up by the button. */
+        .vp-controls {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0 24px 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 20;
+        }
+
+        /* Slide indicator (dots) */
+        .vp-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vp-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transition: width 0.35s ease, background 0.35s ease;
+        }
+
+        .vp-dot.is-active {
+            width: 24px;
+            border-radius: 4px;
+            background: var(--purple-primary);
+        }
+
+        /* Continue button — same purple used across the app */
+        .vp-cta {
+            width: 100%;
+            max-width: 312px;
+            height: 52px;
+            border: none;
+            border-radius: 32px;
+            background: var(--purple-primary);
+            color: white;
+            font-family: 'General Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: 0.1px;
+            cursor: pointer;
+            box-shadow: 0 12px 28px rgba(122, 80, 247, 0.35);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+        }
+
+        .vp-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 32px rgba(122, 80, 247, 0.45);
+        }
+
+        .vp-cta:active {
+            transform: translateY(1px);
+            box-shadow: 0 8px 18px rgba(122, 80, 247, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="hf-back-pill" aria-label="Back to handoff">
+        <i class="ph ph-arrow-left"></i>
+        <span>Back to Handoff</span>
+    </a>
+
+    <div class="hf-demo-shell">
+        <div class="device-frame vp-shell">
+            <!-- Standard app background (static, no animation) -->
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <!-- Status bar -->
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Slider viewport -->
+                <div class="vp-viewport">
+                    <div class="vp-track" id="vpTrack">
+                        <!-- Slide 1 -->
+                        <section class="vp-slide" data-index="0">
+                            <lottie-player
+                                class="vp-lottie"
+                                data-slide-lottie="0"
+                                src="new-assets/Screen1.json"
+                                background="transparent"
+                                speed="1"
+                                mode="normal">
+                            </lottie-player>
+                        </section>
+
+                        <!-- Slide 2 -->
+                        <section class="vp-slide" data-index="1">
+                            <lottie-player
+                                class="vp-lottie"
+                                data-slide-lottie="1"
+                                src="new-assets/Screen2.json"
+                                background="transparent"
+                                speed="1"
+                                mode="normal">
+                            </lottie-player>
+                        </section>
+
+                        <!-- Slide 3 -->
+                        <section class="vp-slide" data-index="2">
+                            <lottie-player
+                                class="vp-lottie"
+                                data-slide-lottie="2"
+                                src="new-assets/Screen3.json"
+                                background="transparent"
+                                speed="1"
+                                mode="normal">
+                            </lottie-player>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="vp-controls">
+                    <div class="vp-indicator" role="tablist" aria-label="Slide indicator">
+                        <span class="vp-dot is-active" data-dot="0" role="tab" aria-selected="true"></span>
+                        <span class="vp-dot" data-dot="1" role="tab" aria-selected="false"></span>
+                        <span class="vp-dot" data-dot="2" role="tab" aria-selected="false"></span>
+                    </div>
+
+                    <button class="vp-cta" id="vpContinue" type="button">Continue</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Value Prop slider</h3>
+            <p>
+                Slider de 3 pasos con Lottie por slide. Cada animación se reproduce una
+                sola vez al activarse y queda pausada en el último frame hasta que el
+                usuario presiona Continue.
+            </p>
+        </div>
+    </div>
+
+    <button class="hf-replay-pill" id="replayBtn" aria-label="Replay value prop slider">
+        <i class="ph ph-arrow-clockwise"></i>
+        <span>Replay</span>
+    </button>
+
+    <script>
+        // ── Value Prop slider controller ───────────────────────────
+        const track = document.getElementById('vpTrack');
+        const continueBtn = document.getElementById('vpContinue');
+        const dots = Array.from(document.querySelectorAll('.vp-dot'));
+        const players = Array.from(document.querySelectorAll('[data-slide-lottie]'));
+        const TOTAL = players.length;
+
+        let current = 0;
+        // Track per-player state so we can replay correctly later
+        const ready = new Array(TOTAL).fill(false);
+        const finished = new Array(TOTAL).fill(false);
+
+        // Wire up each Lottie player with its lifecycle hooks
+        players.forEach((player, index) => {
+            // IMPORTANT: lottie-player treats `loop` as a boolean HTML
+            // attribute, so the *presence* of the attribute enables it
+            // regardless of its value (yes, even loop="false" loops).
+            // Remove it entirely and set the property to false so the
+            // animation plays exactly once and emits `complete`.
+            player.removeAttribute('loop');
+            player.loop = false;
+
+            player.addEventListener('ready', () => {
+                ready[index] = true;
+                // Force the player to NOT autoplay all of them at once;
+                // start only the active slide once it's ready.
+                try { player.pause(); } catch (_) { /* noop */ }
+                if (index === current && !finished[index]) {
+                    playSlide(index);
+                }
+            });
+
+            // When the animation finishes its single play, freeze it on
+            // the very last frame. lottie-player can internally rewind
+            // to frame 0 after `complete` (depends on version), so we
+            // defensively seek to the last frame and pause.
+            player.addEventListener('complete', () => {
+                finished[index] = true;
+                try {
+                    const inst = typeof player.getLottie === 'function'
+                        ? player.getLottie()
+                        : null;
+                    if (inst && typeof inst.totalFrames === 'number') {
+                        const lastFrame = Math.max(0, inst.totalFrames - 1);
+                        player.seek(lastFrame);
+                    } else {
+                        // Fallback: 99% lands on the very last frame for
+                        // most timelines without crossing into a wrap.
+                        player.seek('99%');
+                    }
+                    player.pause();
+                } catch (_) { /* noop */ }
+            });
+        });
+
+        function playSlide(index) {
+            const player = players[index];
+            if (!player || !ready[index]) return;
+
+            if (finished[index]) {
+                // Already finished once: keep it parked on the last frame.
+                // Calling .stop() would rewind, so we just leave it.
+                return;
+            }
+            try {
+                // Start from frame 0 in case it was paused at 0
+                player.seek(0);
+                player.play();
+            } catch (_) { /* noop */ }
+        }
+
+        function goTo(index) {
+            current = Math.max(0, Math.min(TOTAL - 1, index));
+            track.style.transform = `translate3d(${-current * 33.3333}%, 0, 0)`;
+
+            // Update indicator
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('is-active', i === current);
+                dot.setAttribute('aria-selected', i === current ? 'true' : 'false');
+            });
+
+            // Update CTA label on the last step (still goes "forward" but
+            // semantically completes the value prop on tap)
+            continueBtn.textContent = current === TOTAL - 1 ? 'Get Started' : 'Continue';
+
+            // Play the active slide if not already finished
+            playSlide(current);
+        }
+
+        continueBtn.addEventListener('click', () => {
+            if (current < TOTAL - 1) {
+                goTo(current + 1);
+            }
+            // On the last slide the CTA simulates the hand-off to the
+            // next product screen — we intentionally do NOT restart the
+            // slider here so finished animations stay frozen on their
+            // last frame. Use the Replay pill to re-run the demo.
+        });
+
+        function replay() {
+            // Reset everything for a clean re-run
+            finished.fill(false);
+            players.forEach((player) => {
+                try { player.stop(); } catch (_) { /* noop */ }
+            });
+            goTo(0);
+        }
+
+        document.getElementById('replayBtn').addEventListener('click', replay);
+
+        // Keyboard navigation for desktop reviewers
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') goTo(current + 1);
+            if (e.key === 'ArrowLeft')  goTo(current - 1);
+        });
+    </script>
+</body>
+
+</html>
