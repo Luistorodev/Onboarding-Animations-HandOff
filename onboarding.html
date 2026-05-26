@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Welcome</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/onboarding.css">
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+
+<body>
+    <div class="presentation-wrapper">
+        <div class="device-frame">
+            <div class="app-container onboarding-container" id="onboarding-app">
+
+                <!-- Status Bar -->
+                <div class="status-bar light onboarding-status-bar">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Slides Wrapper (only text + image) -->
+                <div class="ob-slides-track" id="ob-track">
+
+                    <!-- ── SLIDE 1 ── -->
+                    <div class="ob-slide" id="ob-slide-1" data-index="0">
+                        <div class="ob-bg ob-bg-1"></div>
+                        <div class="ob-content">
+                            <img src="assets/Ontop-isologo.png" alt="Ontop" class="ob-logo">
+                            <div class="ob-text-block">
+                                <h1 class="ob-headline">The World is<br>your Stage</h1>
+                                <p class="ob-subtext">All your money. One place.<br>Built for people who move first.</p>
+                            </div>
+                            <div class="ob-image-wrap">
+                                <img src="new-assets/Group 1321316289.png" alt="Global accounts" class="ob-image ob-image-1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SLIDE 2 ── -->
+                    <div class="ob-slide" id="ob-slide-2" data-index="1">
+                        <div class="ob-bg ob-bg-2"></div>
+                        <div class="ob-content">
+                            <img src="assets/Ontop-isologo.png" alt="Ontop" class="ob-logo">
+                            <div class="ob-text-block">
+                                <h1 class="ob-headline">Bill the Globe.<br>Get Paid, Fast</h1>
+                                <p class="ob-subtext">Use Ontop Pay to invoice any client, anywhere. Professional billing meets instant deposits.</p>
+                            </div>
+                            <div class="ob-image-wrap">
+                                <img src="new-assets/Free iPhone Hand Mockup (Mockuuups Studio).png" alt="Global billing" class="ob-image ob-image-2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SLIDE 3 ── -->
+                    <div class="ob-slide" id="ob-slide-3" data-index="2">
+                        <div class="ob-bg ob-bg-3"></div>
+                        <div class="ob-content">
+                            <img src="assets/Ontop-isologo.png" alt="Ontop" class="ob-logo">
+                            <div class="ob-text-block">
+                                <h1 class="ob-headline ob-headline-accent">Spend Without<br>Borders</h1>
+                                <p class="ob-subtext">Your Ontop Visa Platinum is linked to your accounts. Virtual and physical. Spend anywhere Visa is accepted.</p>
+                            </div>
+                            <div class="ob-image-wrap">
+                                <img src="new-assets/Group 1321316287.png" alt="Visa card" class="ob-image ob-image-3">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SLIDE 4 ── -->
+                    <div class="ob-slide" id="ob-slide-4" data-index="3">
+                        <div class="ob-bg ob-bg-4"></div>
+                        <div class="ob-content">
+                            <img src="assets/Ontop-isologo.png" alt="Ontop" class="ob-logo">
+                            <div class="ob-text-block">
+                                <h1 class="ob-headline">The Global<br>Standard</h1>
+                                <p class="ob-subtext">Don't just move, move better. 10% cashback, VIP travel, and global perks. The essential layer for your global life.</p>
+                            </div>
+                            <div class="ob-image-wrap">
+                                <img src="new-assets/Mask group.png" alt="Ontop Reserve" class="ob-image ob-image-4">
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /ob-slides-track -->
+
+                <!-- Fixed Footer (dots + buttons) -->
+                <div class="ob-footer" id="ob-footer">
+                    <div class="ob-dots" id="ob-dots">
+                        <span class="ob-dot active" data-slide="0"></span>
+                        <span class="ob-dot" data-slide="1"></span>
+                        <span class="ob-dot" data-slide="2"></span>
+                        <span class="ob-dot" data-slide="3"></span>
+                    </div>
+                    <button class="ob-continue-btn" id="ob-continue-btn">Continue</button>
+                    <button class="ob-skip-btn" id="ob-skip-btn">Skip</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/onboarding.js"></script>
+    <script src="js/handoff-controls.js"></script>
+</body>
+
+</html>

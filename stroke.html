@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Stroke Animation</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <div class="demo-stage" id="strokeStage">
+                    <div class="demo-stage-eyebrow">Animation 06</div>
+                    <h3 class="demo-stage-title">Metallic stroke</h3>
+
+                    <button class="demo-btn-primary loop" id="strokeLoop">Continue</button>
+                    <button class="demo-btn-secondary">Skip for now</button>
+
+                    <p style="text-align:center; color: rgba(235,235,245,0.5); font-size: 12px; margin-top:8px;">
+                        El stroke se anima en loop para inspección.<br>
+                        En producción corre 2 ciclos y se atenúa.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Stroke</h3>
+            <p>Borde con gradiente metálico recorriendo el botón primario, atrae atención sin saturar.</p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        window.__hfReplay = function () {
+            const btn = document.getElementById('strokeLoop');
+            btn.style.animation = 'none';
+            void btn.offsetWidth;
+            btn.style.animation = '';
+        };
+    </script>
+</body>
+
+</html>

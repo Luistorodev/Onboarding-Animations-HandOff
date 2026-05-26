@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Activation</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/activation.css">
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+
+<body>
+    <div class="presentation-wrapper">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container activation-container">
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <div class="ac-header">
+                    <a href="dashboard.html" class="ac-back-btn" aria-label="Go back">
+                        <i class="ph ph-arrow-left"></i>
+                    </a>
+                </div>
+
+                <!-- Hero Main -->
+                <div class="ac-hero">
+                    <div class="ac-progress-container">
+                        <!-- SVG Circular Progress -->
+                        <svg class="ac-progress-svg" width="92" height="92" viewBox="0 0 92 92">
+                            <!-- Track -->
+                            <circle class="ac-progress-track" cx="46" cy="46" r="42" />
+                            <!-- Progress Ring -->
+                            <circle class="ac-progress-ring" cx="46" cy="46" r="42" />
+                        </svg>
+                        <div class="ac-progress-text">
+                            <span class="ac-percent">20<span style="font-size: 14px;">%</span></span>
+                            <span class="ac-sub-label">1/5 DONE</span>
+                        </div>
+                    </div>
+
+                    <div class="ac-hero-text">
+                        <div class="ac-title-wrap">
+                            <span class="ac-overline" style="text-transform: uppercase;">Let's get you set up</span>
+                            <h1 class="ac-title">4 steps left</h1>
+                        </div>
+                        <div class="ac-meta-row">
+                            <div class="ac-time-pill">
+                                <i class="ph ph-clock"></i>
+                                <span>~ 9 min left</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checklist Body -->
+                <div class="ac-checklist-body">
+                    <p class="ac-section-heading" style="text-transform: uppercase;">Unlock the full Ontop experience
+                    </p>
+                    <div class="ac-steps-stack">
+                        <!-- Step Card 1 -->
+                        <div class="ac-step-card completed">
+                            <div class="ac-number-circle">
+                                <span>1</span>
+                            </div>
+                            <div class="ac-card-content">
+                                <div class="ac-title-row">
+                                    <span class="ac-card-title">Personal details</span>
+                                </div>
+                                <!-- <p class="ac-card-desc">Add your basic info to get started</p> -->
+                                <div class="ac-stats">
+                                    <div class="ac-stat-item">
+                                        <i class="ph ph-clock"></i>
+                                        <span>~2 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step Card 2 -->
+                        <div class="ac-step-card active" onclick="window.location.href='dashboard-2.html'">
+                            <div class="ac-number-circle">
+                                <span>2</span>
+                            </div>
+                            <div class="ac-card-content">
+                                <div class="ac-title-row">
+                                    <span class="ac-card-title">Identity verification</span>
+                                    <div class="ac-badge">
+                                        <span>NEXT</span>
+                                    </div>
+                                </div>
+                                <!-- <p class="ac-card-desc">Have your ID ready, this takes a minute</p> -->
+                                <div class="ac-stats">
+                                    <div class="ac-stat-item">
+                                        <i class="ph ph-clock"></i>
+                                        <span>~5 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ac-chevron">
+                                <i class="ph ph-caret-right"></i>
+                            </div>
+                        </div>
+
+                        <!-- Step Card 3 -->
+                        <div class="ac-step-card disabled">
+                            <div class="ac-number-circle"
+                                style="background: transparent; border: 1px solid rgba(255,255,255,0.2);">
+                                <span>3</span>
+                            </div>
+                            <div class="ac-card-content">
+                                <div class="ac-title-row">
+                                    <span class="ac-card-title">Account details</span>
+                                </div>
+                                <!-- <p class="ac-card-desc">Tell us a bit more to finish your setup</p> -->
+                                <div class="ac-stats">
+                                    <div class="ac-stat-item">
+                                        <i class="ph ph-clock"></i>
+                                        <span>~1 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ac-chevron">
+                                <i class="ph ph-caret-right"></i>
+                            </div>
+                        </div>
+
+                        <!-- Step Card 4 -->
+                        <div class="ac-step-card disabled">
+                            <div class="ac-number-circle"
+                                style="background: transparent; border: 1px solid rgba(255,255,255,0.2);">
+                                <span>4</span>
+                            </div>
+                            <div class="ac-card-content">
+                                <div class="ac-title-row">
+                                    <span class="ac-card-title">Add funds to your account</span>
+                                </div>
+                                <!-- <p class="ac-card-desc">Top up now to keep your balance ready for any transaction.</p> -->
+                                <div class="ac-stats">
+                                    <div class="ac-stat-item">
+                                        <i class="ph ph-clock"></i>
+                                        <span>~1 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ac-chevron">
+                                <i class="ph ph-caret-right"></i>
+                            </div>
+                        </div>
+
+                        <!-- Step Card 5 -->
+                        <div class="ac-step-card disabled">
+                            <div class="ac-number-circle"
+                                style="background: transparent; border: 1px solid rgba(255,255,255,0.2);">
+                                <span>5</span>
+                            </div>
+                            <div class="ac-card-content">
+                                <div class="ac-title-row">
+                                    <span class="ac-card-title">Activate your virtual card</span>
+                                </div>
+                                <!-- <p class="ac-card-desc">Enable your card today to start spending securely online.</p> -->
+                                <div class="ac-stats">
+                                    <div class="ac-stat-item">
+                                        <i class="ph ph-clock"></i>
+                                        <span>~2 min</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ac-chevron">
+                                <i class="ph ph-caret-right"></i>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        // Trigger the progress animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const circle = document.querySelector('.ac-progress-ring');
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            circle.style.strokeDashoffset = circumference;
+
+            // Set progress to 20%
+            const percent = 20;
+            const offset = circumference - (percent / 100) * circumference;
+
+            // Delay for smooth entry
+            setTimeout(() => {
+                circle.style.strokeDashoffset = offset;
+            }, 300);
+        });
+    </script>
+</body>
+
+</html>

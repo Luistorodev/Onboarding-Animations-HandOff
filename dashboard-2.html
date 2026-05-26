@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Token Wallet App Mockup</title>
+
+    <!-- Fonts: General Sans for clean, premium financial look -->
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+
+    <!-- Phosphor Icons for high-fidelity vector icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/add-funds.css">
+</head>
+
+<body>
+    <div class="presentation-wrapper">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+            <div class="app-bg-tint" id="appBgTint"></div>
+            <div class="app-container">
+                <!-- Status Bar Mock -->
+                <div class="status-bar">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <header class="app-header">
+                    <div class="user-profile">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?fit=crop&w=100&h=100"
+                            alt="Profile Picture" class="avatar" onclick="window.location.href='index.html';"
+                            style="cursor: pointer;">
+                        <div class="user-info">
+                            <h1 class="user-name">Adan Smith</h1>
+                            <p class="greeting">Welcome back</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="icon-btn">
+                            <i class="ph ph-shield-check"></i>
+                        </button>
+                        <button class="icon-btn notification-btn">
+                            <i class="ph ph-bell"></i>
+                            <span class="badge">1</span>
+                        </button>
+                    </div>
+                </header>
+
+                <div class="views-wrapper">
+                    <!-- Scrollable Content: Home -->
+                    <main class="app-content view-pane active" id="view-home">
+
+                        <!-- Balance Section -->
+                        <section class="balance-section">
+                            <h2 class="balance-label">Total Balance</h2>
+                            <div class="balance-amount">10,000.00</div>
+                            <div class="currency-chip">
+                                <img src="assets/Flag.svg" alt="Ontop Flag" class="flag-icon">
+                                <span>USD</span>
+                            </div>
+                        </section>
+
+                        <!-- Action Buttons -->
+                        <section class="action-buttons">
+                            <button class="action-btn primary">
+                                <i class="ph ph-paper-plane-tilt"></i>
+                                Send
+                            </button>
+                            <button class="action-btn secondary">
+                                <i class="ph ph-plus-circle"></i>
+                                Add
+                            </button>
+                            <button class="action-btn outline">
+                                <i class="ph ph-dots-three"></i>
+                            </button>
+                        </section>
+
+                        <!-- Accounts Carousel -->
+                        <section class="accounts-carousel">
+                            <!-- Card 1: Payroll -->
+                            <div class="account-card pattern-bg">
+                                <div class="card-top">
+                                    <div class="card-icon-wrapper">
+                                        <img src="assets/Flag.svg" alt="Ontop Flag" class="flag-icon">
+                                        <span class="card-currency-label">Payroll account</span>
+                                    </div>
+                                </div>
+                                <div class="card-bottom">
+                                    <div class="account-balance">15,000.00</div>
+                                    <div class="account-type">Payroll account</div>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Digital USD -->
+                            <div class="account-card">
+                                <div class="card-top">
+                                    <div class="card-icon-wrapper">
+                                        <img src="assets/flag-usdc.svg" alt="Ontop Flag" class="flag-icon">
+                                        <span class="card-currency-label">Personal Account</span>
+                                    </div>
+                                </div>
+                                <div class="card-bottom">
+                                    <div class="account-balance">15,000.00</div>
+                                    <div class="account-type">USDc</div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Future Fund -->
+                            <div class="account-card">
+                                <div class="card-top">
+                                    <div class="card-icon-wrapper">
+                                        <img src="assets/Flag.svg" alt="Ontop Flag" class="flag-icon">
+                                        <span class="card-currency-label">Future Fund</span>
+                                    </div>
+                                </div>
+                                <div class="card-bottom">
+                                    <div class="account-balance">3,200.00</div>
+                                    <div class="account-type">Earn up to 3%APY</div>
+                                </div>
+                            </div>
+                        </section>
+
+
+
+                        <!-- Transactions -->
+                        <section class="transactions-section">
+                            <header class="section-header">
+                                <h3>Your transactions</h3>
+                                <a href="#" class="btn-link">See all</a>
+                            </header>
+
+                            <div class="transaction-list">
+                                <div class="transaction-item">
+                                    <div class="tx-left">
+                                        <div class="tx-icon">
+                                            <i class="ph ph-arrow-down-left"></i>
+                                        </div>
+                                        <div class="tx-details">
+                                            <p class="tx-title">Payment link</p>
+                                            <span class="tx-status completed">Completed</span>
+                                        </div>
+                                    </div>
+                                    <div class="tx-right">
+                                        <p class="tx-amount positive"><span class="sign">+</span>90,000 USD</p>
+                                    </div>
+                                </div>
+
+                                <div class="transaction-item">
+                                    <div class="tx-left">
+                                        <div class="tx-icon">
+                                            <i class="ph ph-arrow-down-left"></i>
+                                        </div>
+                                        <div class="tx-details">
+                                            <p class="tx-title">Amazon</p>
+                                            <span class="tx-status completed">Completed</span>
+                                        </div>
+                                    </div>
+                                    <div class="tx-right">
+                                        <p class="tx-amount negative"><span class="sign">-</span>90,000 USDc</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- For You Section -->
+                        <section class="for-you-section">
+                            <header class="section-header">
+                                <h3>Adan, access your paycheck now</h3>
+                            </header>
+
+                            <div class="offer-container">
+                                <img src="assets/Banner New.svg" alt="For you banner" class="offer-banner-single">
+                            </div>
+                        </section>
+                        <!-- Extra space to scroll past the floating nav bar -->
+                        <div class="scroll-spacer"></div>
+                    </main>
+
+                    <!-- Scrollable Content: Card -->
+                    <main class="app-content view-pane" id="view-card">
+
+
+                        <!-- Card Display (Slider) -->
+                        <div class="single-card-display">
+                            <div class="cards-track" id="cardsTrack">
+                                <!-- Slide 0: Virtual -->
+                                <div class="card-slide" id="activeCardSlide">
+                                    <div class="virtual-card-wrapper">
+                                        <img src="assets/Virtual Card.png" alt="Virtual Card" class="virtual-card-img">
+                                        <div class="card-flare"></div>
+                                    </div>
+                                </div>
+                                <!-- Slide 1: Physical -->
+                                <div class="card-slide">
+                                    <div class="virtual-card-wrapper">
+                                        <img src="assets/physical Card.png" alt="Physical Card"
+                                            class="virtual-card-img">
+                                        <div class="card-flare"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-actions-grid">
+                            <button class="card-action-btn">
+                                <div class="action-icon-circle">
+                                    <i class="ph ph-snowflake"></i>
+                                </div>
+                                <span>Freeze card</span>
+                            </button>
+                            <button class="card-action-btn">
+                                <div class="action-icon-circle">
+                                    <i class="ph ph-eye"></i>
+                                </div>
+                                <span>Card details</span>
+                            </button>
+                            <button class="card-action-btn">
+                                <div class="action-icon-circle">
+                                    <i class="ph ph-gear"></i>
+                                </div>
+                                <span>Card settings</span>
+                            </button>
+                        </div>
+
+                        <div class="offer-container">
+                            <img src="assets/Banner Card.png" alt="Get physical card banner"
+                                class="offer-banner-single">
+                        </div>
+
+                        <div class="scroll-spacer"></div>
+                    </main>
+                </div>
+            </div>
+
+            <!-- Floating Navigation Bar -->
+            <nav class="floating-nav">
+                <button class="nav-item active">
+                    <i class="ph ph-house"></i>
+                    <span>Home</span>
+                </button>
+                <button class="nav-item">
+                    <i class="ph ph-credit-card"></i>
+                    <span>Card</span>
+                </button>
+                <button class="nav-item">
+                    <i class="ph ph-arrows-left-right"></i>
+                    <span>Swap</span>
+                </button>
+                <button class="nav-item">
+                    <i class="ph ph-rocket-launch"></i>
+                    <span>Growth</span>
+                </button>
+                <button class="nav-item nav-sparkles">
+                    <i class="ph ph-sparkle"></i>
+                    <span>Perks</span>
+                </button>
+            </nav>
+
+            <!-- ═══ Add Funds Overlay (Digital USD Onboarding) ═══ -->
+            <div class="add-funds-overlay" id="addFundsOverlay">
+                <div class="afo-bg"></div>
+                <div class="afo-container">
+                    <!-- Status Bar -->
+                    <div class="afo-status-bar">
+                        <span class="time">9:41</span>
+                        <div class="afo-status-icons">
+                            <i class="ph-fill ph-cell-signal-full"></i>
+                            <i class="ph-fill ph-wifi-high"></i>
+                            <i class="ph-fill ph-battery-full"></i>
+                        </div>
+                    </div>
+
+                    <!-- Header with back button -->
+                    <div class="afo-header">
+                        <button class="afo-back-btn" id="addFundsBack">
+                            <i class="ph ph-arrow-left"></i>
+                        </button>
+                    </div>
+
+                    <!-- Hero coin image -->
+                    <div class="afo-hero">
+                        <div class="afo-hero-flare"></div>
+                        <img src="assets/Coin.png" alt="Digital USD Coin" class="afo-hero-img">
+                    </div>
+
+                    <!-- Body -->
+                    <div class="afo-body">
+                        <div class="afo-text-block">
+                            <h2 class="afo-title">Digital USD </h2>
+                            <p class="afo-description">Your borderless account for instant, global moves, powered by
+                                USDc. This is your gateway to the entire digital economy.</p>
+                        </div>
+
+                        <!-- Features card -->
+                        <div class="afo-features-card">
+                            <div class="afo-feature">
+                                <div class="afo-feature-icon">
+                                    <i class="ph ph-lightning"></i>
+                                </div>
+                                <div class="afo-feature-text">
+                                    <p class="feat-title">Truly borderless</p>
+                                    <p class="feat-desc">Send and receive funds anywhere in the world, instantly.</p>
+                                </div>
+                            </div>
+                            <div class="afo-feature">
+                                <div class="afo-feature-icon">
+                                    <i class="ph ph-currency-dollar"></i>
+                                </div>
+                                <div class="afo-feature-text">
+                                    <p class="feat-title">The world's dollar</p>
+                                    <p class="feat-desc">Your balance is held in USDc, fully backed 1:1 with US dollars.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom: powered-by + CTA -->
+                        <div class="afo-bottom">
+                            <div class="afo-powered-by">
+                                <img src="assets/Powered.svg" alt="Powered by BVNK" class="afo-powered-img">
+                            </div>
+                            <button class="afo-cta" id="addFundsCta">Continue with Digital USD</button>
+                        </div>
+                    </div>
+
+                    <!-- Home Indicator -->
+                    <div class="afo-home-indicator"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

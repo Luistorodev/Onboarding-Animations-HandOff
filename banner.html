@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Banner Animation</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <div class="banner-stage" id="bannerStage">
+                    <p class="demo-stage-eyebrow" style="margin-top:0">Animation 07</p>
+                    <h3 class="demo-stage-title" style="margin-bottom:8px">Promo banner</h3>
+
+                    <div class="banner-demo-card" id="bannerCard1">
+                        <img src="assets/Banner New.svg" alt="For you banner">
+                    </div>
+
+                    <div class="banner-demo-card" id="bannerCard2" style="animation-delay: 0.5s">
+                        <img src="assets/Banner Card.png" alt="Get physical card banner">
+                    </div>
+
+                    <div class="banner-demo-card" id="bannerCard3" style="animation-delay: 0.8s">
+                        <img src="assets/activation-banner.svg" alt="Activation banner">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Banner</h3>
+            <p>Slide-up con easing premium y shine recurrente cada pocos segundos para mantener atención.</p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        window.__hfReplay = function () {
+            const stage = document.getElementById('bannerStage');
+            const clone = stage.cloneNode(true);
+            stage.replaceWith(clone);
+        };
+    </script>
+</body>
+
+</html>

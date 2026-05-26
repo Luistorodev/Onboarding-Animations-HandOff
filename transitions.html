@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Screen Transitions</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+
+    <style>
+        /* Lock the device viewport — no scroll at the container level */
+        .app-container {
+            overflow: hidden !important;
+        }
+
+        .tx-app {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .tx-app .status-bar {
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .tx-progress {
+            display: flex;
+            gap: 4px;
+            padding: 16px 16px 12px;
+            flex-shrink: 0;
+        }
+
+        .tx-progress span {
+            flex: 1;
+            height: 3px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: background 0.3s;
+        }
+
+        .tx-progress span.active {
+            background: white;
+        }
+
+        .tx-stage-wrap {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .tx-pane-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+        }
+
+        .tx-pane-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .tx-pane[data-step="0"] .tx-pane-image {
+            background: radial-gradient(140% 100% at 30% 20%, #7a50f7 0%, #3a1a99 60%, #170a3d 100%);
+        }
+        .tx-pane[data-step="1"] .tx-pane-image {
+            background: radial-gradient(140% 100% at 70% 20%, #ff5a70 0%, #b8203a 60%, #410812 100%);
+        }
+        .tx-pane[data-step="2"] .tx-pane-image {
+            background: radial-gradient(140% 100% at 50% 20%, #6ed085 0%, #1f8a45 60%, #0a2e1a 100%);
+        }
+
+        .tx-controls {
+            display: flex;
+            gap: 12px;
+            padding: 16px 16px 24px;
+            flex-shrink: 0;
+            background: linear-gradient(to bottom,
+                rgba(8, 5, 26, 0) 0%,
+                rgba(8, 5, 26, 0.85) 30%,
+                rgba(8, 5, 26, 0.95) 100%);
+        }
+
+        .tx-controls button {
+            flex: 1;
+            height: 44px;
+            border-radius: 32px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05);
+            color: white;
+            font-family: 'General Sans', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, opacity 0.2s;
+        }
+
+        .tx-controls button:hover { background: rgba(255,255,255,0.1); }
+        .tx-controls button:active { transform: scale(0.97); }
+
+        .tx-controls button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .tx-controls button:disabled:hover {
+            background: rgba(255,255,255,0.04);
+        }
+
+        .tx-controls .primary {
+            background: var(--purple-primary);
+            border-color: var(--purple-primary);
+        }
+
+        .tx-controls .primary:hover {
+            background: #8862ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <div class="tx-app">
+                    <div class="status-bar light">
+                        <span class="time">9:41</span>
+                        <div class="status-icons">
+                            <i class="ph-fill ph-cell-signal-full"></i>
+                            <i class="ph-fill ph-wifi-high"></i>
+                            <i class="ph-fill ph-battery-full"></i>
+                        </div>
+                    </div>
+
+                    <div class="tx-progress" id="txProgress">
+                        <span class="active"></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="tx-stage-wrap">
+                        <div class="tx-stage" id="txStage">
+                            <div class="tx-pane is-active" data-step="0">
+                                <div class="tx-pane-image">
+                                    <img src="new-assets/Free iPhone Hand Mockup (Mockuuups Studio).png" alt="Phone with code">
+                                </div>
+                                <h3>Check your inbox</h3>
+                                <p>We sent a 6-digit code to verify your email.</p>
+                            </div>
+                            <div class="tx-pane is-next" data-step="1">
+                                <div class="tx-pane-image">
+                                    <img src="new-assets/Group 1321316289.png" alt="Global accounts">
+                                </div>
+                                <h3>Where do you live?</h3>
+                                <p>So we can match the right products for you.</p>
+                            </div>
+                            <div class="tx-pane is-next" data-step="2">
+                                <div class="tx-pane-image">
+                                    <img src="new-assets/Group 1321316287.png" alt="Visa card">
+                                </div>
+                                <h3>How will you work?</h3>
+                                <p>As an individual or through a registered company.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tx-controls">
+                        <button id="txBack">← Back</button>
+                        <button id="txNext" class="primary">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Transición entre pantallas</h3>
+            <p>Slide horizontal con fade, mismo easing del flujo de signup. Tap los controles o usa Replay.</p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        const panes    = document.querySelectorAll('.tx-pane');
+        const dots     = document.querySelectorAll('#txProgress span');
+        const btnBack  = document.getElementById('txBack');
+        const btnNext  = document.getElementById('txNext');
+        let current = 0;
+
+        function paint() {
+            panes.forEach((p, i) => {
+                p.classList.remove('is-active', 'is-prev', 'is-next');
+                if (i === current)      p.classList.add('is-active');
+                else if (i < current)   p.classList.add('is-prev');
+                else                    p.classList.add('is-next');
+            });
+            dots.forEach((d, i) => d.classList.toggle('active', i === current));
+
+            // Disable buttons at the edges
+            btnBack.disabled = current === 0;
+            btnNext.disabled = current === panes.length - 1;
+        }
+
+        function go(target) {
+            if (target < 0 || target >= panes.length || target === current) return;
+            current = target;
+            paint();
+        }
+
+        btnNext.addEventListener('click', () => go(current + 1));
+        btnBack.addEventListener('click', () => go(current - 1));
+
+        // Initial paint
+        paint();
+
+        // Replay just resets to the first step
+        window.__hfReplay = function () {
+            current = 0;
+            paint();
+        };
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,325 @@
+/* css/onboarding.css */
+
+/* ============================================================
+   ONBOARDING CONTAINER
+   Override the default app-container so it cannot scroll
+   ============================================================ */
+.onboarding-container {
+    position: relative;
+    overflow: hidden !important;   /* kill vertical scroll */
+    background: #08051A;
+    animation: none !important;
+    opacity: 1 !important;
+    /* Must be a fixed-height block — same as the device inner area */
+    display: flex;
+    flex-direction: column;
+}
+
+.onboarding-status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 14px 24px 0;
+}
+
+/* ============================================================
+   SLIDES TRACK — horizontal, JS-driven via transform
+   ============================================================ */
+.ob-slides-track {
+    display: flex;
+    width: 400%;           /* 4 slides × 100% of container width */
+    height: 100%;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* ── Individual slide ── */
+.ob-slide {
+    flex: 0 0 25%;         /* 1/4 of track = 100% of viewport */
+    height: 100%;
+    position: relative;
+    overflow: hidden;      /* clip content that exceeds the slide */
+    display: flex;
+    flex-direction: column;
+}
+
+/* ============================================================
+   SLIDE BACKGROUNDS
+   ============================================================ */
+.ob-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+/* All slides share the same dashboard radial gradient */
+.ob-bg-1,
+.ob-bg-2,
+.ob-bg-3,
+.ob-bg-4 {
+    background: radial-gradient(
+        100.38% 68.74% at 50% -23.81%,
+        #21136C 0%,
+        #7064AC 18.27%,
+        #4C3E97 42.79%,
+        #0D082B 81.73%,
+        #08051A 100%
+    );
+    background-size: 160% 160%;
+    background-position: 20% 0%;
+    animation: breathingGradient 14s ease-in-out infinite alternate;
+}
+
+/* ============================================================
+   SLIDE CONTENT — flex column filling remaining height
+   ============================================================ */
+.ob-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    padding-top: 44px;    /* room for status bar */
+    flex: 1;              /* takes all space between top and footer */
+    min-height: 0;        /* allow shrinking */
+    overflow: hidden;
+}
+
+/* Logo */
+.ob-logo {
+    width: 26px;
+    height: auto;
+    margin: 12px 0 20px 20px;
+    filter: brightness(0) invert(1);
+    flex-shrink: 0;
+}
+
+/* Text block */
+.ob-text-block {
+    padding: 0 20px;
+    margin-bottom: 12px;
+    flex-shrink: 0;
+}
+
+.ob-headline {
+    font-family: 'General Sans', sans-serif;
+    font-size: 27px;
+    font-weight: 600;
+    line-height: 1.14;
+    color: #ffffff;
+    letter-spacing: -0.2px;
+    margin-bottom: 10px;
+}
+
+/* Slide 3 headline — white like the rest */
+.ob-headline-accent {
+    color: #ffffff;
+}
+
+.ob-subtext {
+    font-family: 'General Sans', sans-serif;
+    font-size: 12.5px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: rgba(235, 235, 245, 0.62);
+    max-width: 270px;
+}
+
+/* ============================================================
+   IMAGE AREA — grows to fill remaining content space
+   ============================================================ */
+.ob-image-wrap {
+    position: relative;
+    z-index: 5;
+    flex: 1;              /* fill all leftover space */
+    min-height: 0;        /* critical: allow flex child to shrink */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;     /* never let image bleed out */
+    pointer-events: none;
+}
+
+.ob-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Per-slide image sizing tweaks */
+.ob-image-1 {
+    filter: drop-shadow(0 16px 36px rgba(0,0,0,0.75));
+    animation: obFloat1 5s ease-in-out infinite;
+    object-position: center 30%;
+}
+.ob-slide:nth-of-type(2) .ob-image-wrap {
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-top: 80px;
+}
+.ob-image-2 {
+    filter: drop-shadow(0 16px 36px rgba(80, 0, 160, 0.55));
+    animation: obFloat2 5.5s ease-in-out infinite;
+    object-position: center left;
+}
+.ob-slide:nth-of-type(3) .ob-image-wrap {
+    position: absolute;
+    inset: -80px 0 0 0;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+.ob-slide:nth-of-type(3) .ob-content {
+    z-index: 10;
+}
+.ob-image-3 {
+    width: 140%;
+    height: 140%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.45;
+    animation: obFloat3 4.8s ease-in-out infinite;
+}
+.ob-slide:nth-of-type(4) .ob-image-wrap {
+    align-items: flex-end;
+    margin-bottom: 70px;
+}
+.ob-image-4 {
+    filter: drop-shadow(0 16px 36px rgba(0,0,0,0.85));
+    animation: obFloat1 6s ease-in-out infinite;
+    width: 85%;
+    height: 85%;
+    align-self: center;
+}
+
+/* Floating micro-animations */
+@keyframes obFloat1 {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-10px); }
+}
+@keyframes obFloat2 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50%       { transform: translateY(-8px) rotate(0.5deg); }
+}
+@keyframes obFloat3 {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50%       { transform: translateY(-12px) rotate(-0.8deg); }
+}
+
+/* ============================================================
+    FOOTER — always pinned at the bottom (fixed, outside track)
+    ============================================================ */
+.ob-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px 20px;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.45) 15%,
+        rgba(0, 0, 0, 0.72) 100%
+    );
+}
+
+/* Progress dots */
+.ob-dots {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+
+.ob-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.25);
+    transition: width 0.35s ease, background 0.35s ease;
+}
+
+.ob-dot.active {
+    width: 20px;
+    background: #ffffff;
+}
+
+/* ── Continue / Get Started — identical to dashboard .action-btn.primary ── */
+.ob-continue-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: 32px;
+    border: 1px solid transparent;
+    color: white;
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background:
+        linear-gradient(var(--purple-primary), var(--purple-primary)) padding-box,
+        linear-gradient(90deg, #5d5657, #c9c5c5, #ffffff, #c9c5c5, #5d5657, #c9c5c5, #ffffff, #c9c5c5, #5d5657) border-box;
+    background-size: 100% 100%, 200% 100%;
+    animation:
+        metallicBorder 2.5s linear 2,
+        fadeGlow 0.5s ease 4.5s forwards;
+    box-shadow: 0 0 8px rgba(201, 197, 197, 0.4), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ob-continue-btn:active { transform: translateY(2px); }
+
+/* Last-slide "Get Started" — same primary style, no special override needed */
+.ob-getstarted-btn {
+    /* inherits .ob-continue-btn — intentionally identical */
+}
+
+/* ── Skip — identical to dashboard .action-btn.secondary ── */
+.ob-skip-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: 32px;
+    border: none;
+    background-color: #667085;
+    color: white;
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ob-skip-btn:active  { transform: translateY(2px); }
+.ob-skip-btn:hover   { opacity: 0.9; }
+
+/* ============================================================
+   SLIDE CONTENT ENTRANCE
+   ============================================================ */
+@keyframes obContentIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.ob-slide.entering .ob-content {
+    animation: obContentIn 0.48s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 400px) {
+    .ob-headline { font-size: 25px; }
+}

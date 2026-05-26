@@ -1,0 +1,423 @@
+/* css/signup-flow.css */
+
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header */
+.su-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    margin-top: 44px; /* below status bar */
+    gap: 16px;
+}
+
+.su-back-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+}
+
+.su-progress-wrapper {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.su-progress-bar {
+    height: 100%;
+    width: 33.33%; /* Start at step 1 */
+    background: white;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.su-header-spacer {
+    width: 32px; /* balance back button */
+}
+
+/* Steps Container */
+.su-steps-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.su-step {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 24px 16px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(20px);
+    transition: all 0.3s ease;
+}
+
+.su-step.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+}
+
+.su-step.exit-left {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+/* Typography */
+.su-title {
+    font-family: 'General Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 8px;
+    line-height: 1.2;
+}
+
+.su-subtitle {
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    color: rgba(235, 235, 245, 0.6);
+    line-height: 1.4;
+    margin-bottom: 32px;
+}
+
+/* OTP Step */
+.su-otp-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.su-otp-input {
+    flex: 1;
+    width: 0;
+    max-width: 48px;
+    height: 64px;
+    padding: 0;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(12px);
+    color: white;
+    font-family: 'General Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.su-otp-input:focus {
+    outline: none;
+    border-color: var(--purple-primary);
+    background: rgba(122, 80, 247, 0.1);
+    box-shadow: 0 0 0 3px rgba(122, 80, 247, 0.15);
+}
+
+.su-resend-wrapper {
+    text-align: center;
+}
+
+.su-resend-link {
+    color: #9a70ff;
+    text-decoration: none;
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Select Step */
+.su-field {
+    margin-bottom: 24px;
+}
+
+.su-label {
+    display: block;
+    font-family: 'General Sans', sans-serif;
+    font-size: 13px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.su-select-wrap {
+    position: relative;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.su-select-wrap.focused {
+    border-color: var(--purple-primary);
+    background: rgba(122, 80, 247, 0.08);
+}
+
+.su-select-display {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-family: 'General Sans', sans-serif;
+    font-size: 15px;
+    pointer-events: none; /* Let clicks pass to hidden select */
+}
+
+.su-select-placeholder {
+    color: rgba(235, 235, 245, 0.4);
+}
+
+.su-hidden-select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    appearance: none;
+}
+
+.su-hint {
+    font-family: 'General Sans', sans-serif;
+    font-size: 12px;
+    color: rgba(235, 235, 245, 0.5);
+    margin-top: 8px;
+}
+
+/* Radio Cards Step */
+.su-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.su-radio-card {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.su-radio-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.su-hidden-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.su-hidden-radio:checked + .su-radio-icon + .su-radio-content + .su-radio-circle {
+    border-color: var(--purple-primary);
+    background: var(--purple-primary);
+}
+
+.su-hidden-radio:checked + .su-radio-icon + .su-radio-content + .su-radio-circle::after {
+    transform: scale(1);
+}
+
+.su-radio-card:has(.su-hidden-radio:checked) {
+    border-color: var(--purple-primary);
+    background: rgba(122, 80, 247, 0.08);
+}
+
+.su-radio-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+    margin-right: 16px;
+}
+
+.su-radio-content {
+    flex: 1;
+}
+
+.su-radio-title {
+    font-family: 'General Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.su-radio-desc {
+    font-family: 'General Sans', sans-serif;
+    font-size: 13px;
+    color: rgba(235, 235, 245, 0.6);
+    line-height: 1.4;
+    padding-right: 16px;
+}
+
+.su-radio-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 10px;
+    transition: all 0.2s;
+}
+
+.su-radio-circle::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    transform: scale(0);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Footer */
+.su-footer {
+    padding: 16px 16px 20px;
+}
+
+.su-btn {
+    width: 100%;
+    height: 48px;
+    border-radius: 32px;
+    border: none;
+    color: white;
+    font-family: 'General Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.su-btn:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.3);
+    cursor: not-allowed;
+}
+
+.su-btn--primary:not(:disabled) {
+    background:
+        linear-gradient(var(--purple-primary), var(--purple-primary)) padding-box,
+        linear-gradient(90deg, #5d5657, #c9c5c5, #ffffff, #c9c5c5, #5d5657, #c9c5c5, #ffffff, #c9c5c5, #5d5657) border-box;
+    background-size: 100% 100%, 200% 100%;
+    animation: metallicBorder 2.5s linear infinite;
+    box-shadow: 0 0 8px rgba(201, 197, 197, 0.3);
+}
+
+.su-btn--primary:not(:disabled):active {
+    transform: translateY(2px);
+}
+
+.su-home-indicator {
+    height: 4px;
+    width: 120px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    margin: 20px auto 0;
+}
+
+/* Success Animation */
+.su-success-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(14, 11, 23, 0.95);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.su-success-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.su-success-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #6ed085;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    transform: scale(0);
+    box-shadow: 0 8px 24px rgba(110, 208, 133, 0.3);
+}
+
+.su-success-overlay.active .su-success-icon {
+    animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    animation-delay: 0.1s;
+}
+
+.su-success-text {
+    font-family: 'General Sans', sans-serif;
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+    margin-top: 24px;
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.su-success-overlay.active .su-success-text {
+    animation: fadeUp 0.4s ease forwards;
+    animation-delay: 0.3s;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

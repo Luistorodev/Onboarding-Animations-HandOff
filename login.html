@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Create your account</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+
+<body>
+    <div class="presentation-wrapper">
+        <div class="device-frame">
+
+            <!-- Gradient background layers (same as dashboard) -->
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container login-container" id="login-app">
+
+                <!-- Status Bar -->
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header: Logo + Title -->
+                <div class="lg-header">
+                    <img src="assets/Ontop-isologo.png" alt="Ontop" class="lg-logo">
+                    <h1 class="lg-title">Create your account</h1>
+                </div>
+
+                <!-- Form -->
+                <form class="lg-form" id="login-form" autocomplete="off" novalidate>
+
+                    <!-- Full name -->
+                    <div class="lg-field-group">
+                        <label class="lg-label" for="full-name">Full name</label>
+                        <div class="lg-input-wrap">
+                            <input class="lg-input" type="text" id="full-name" name="fullname"
+                                placeholder="Ana Smith" autocomplete="name">
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="lg-field-group">
+                        <label class="lg-label" for="email">Email</label>
+                        <div class="lg-input-wrap">
+                            <input class="lg-input" type="email" id="email" name="email"
+                                placeholder="example@gmail.com" autocomplete="email">
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="lg-field-group">
+                        <label class="lg-label" for="password">Password</label>
+                        <div class="lg-input-wrap lg-input-wrap--password">
+                            <input class="lg-input" type="password" id="password" name="password"
+                                placeholder="••••••••" autocomplete="new-password">
+                            <button type="button" class="lg-eye-btn" id="toggle-password" aria-label="Show password">
+                                <i class="ph ph-eye" id="eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <!-- CTA Buttons -->
+                <div class="lg-actions">
+                    <button class="lg-btn lg-btn--primary" id="create-account-btn">
+                        Create account
+                    </button>
+                    <button class="lg-btn lg-btn--secondary" id="login-btn" onclick="window.location.href='dashboard-2.html'">
+                        Already have an account? Log in
+                    </button>
+                </div>
+
+                <!-- Home indicator -->
+                <div class="lg-home-indicator"></div>
+
+            </div><!-- /login-container -->
+
+            <!-- ══════════════════════════════════════════════
+                 TERMS BOTTOM SHEET (inside device-frame)
+            ══════════════════════════════════════════════ -->
+
+            <!-- Scrim backdrop -->
+            <div class="bs-backdrop" id="bs-backdrop"></div>
+
+            <!-- Sheet panel -->
+            <div class="bs-sheet" id="bs-sheet" role="dialog" aria-modal="true" aria-labelledby="bs-title">
+
+                <!-- Drag handle -->
+                <div class="bs-handle"></div>
+
+                <!-- Handshake image -->
+                <img src="assets/hand-user.png" alt="Handshake" class="bs-emoji-img" aria-hidden="true">
+
+                <!-- Title -->
+                <h2 class="bs-title" id="bs-title">Accept the terms to continue</h2>
+
+                <!-- Checkbox 1 -->
+                <label class="bs-check-row">
+                    <span class="bs-checkbox" id="cb1" role="checkbox" aria-checked="false" tabindex="0"></span>
+                    <span class="bs-check-text">
+                        I agree with the Ontop
+                        <a class="bs-link" href="#">Worker General Terms and Conditions</a>,
+                        <a class="bs-link" href="#">Card Terms of Service</a>,
+                        <a class="bs-link" href="#">Wallet Terms of Service</a>
+                        and <a class="bs-link" href="#">Payment Agent Agreement</a>
+                        that allow Ontop to receive payments from Clients on my behalf.
+                    </span>
+                </label>
+
+                <!-- Checkbox 2 -->
+                <label class="bs-check-row">
+                    <span class="bs-checkbox" id="cb2" role="checkbox" aria-checked="false" tabindex="0"></span>
+                    <span class="bs-check-text">
+                        I agree with the collection and processing of my personal
+                        information for the purposes included in Ontop's
+                        <a class="bs-link" href="#">Privacy Policy</a>.
+                    </span>
+                </label>
+
+                <!-- Learn more -->
+                <p class="bs-learn-more">
+                    <a class="bs-link" href="#">Learn more about how we treat your personal information.</a>
+                </p>
+
+                <!-- Accept button -->
+                <button class="bs-accept-btn" id="bs-accept" disabled>
+                    I accept
+                </button>
+
+                <!-- Cancel -->
+                <button class="bs-cancel-btn" id="bs-cancel">
+                    Cancel
+                </button>
+
+            </div><!-- /bs-sheet -->
+
+        </div><!-- /device-frame -->
+    </div><!-- /presentation-wrapper -->
+
+    <script>
+        /* ── Password toggle ── */
+        const toggleBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+
+        toggleBtn.addEventListener('click', () => {
+            const isHidden = passwordInput.type === 'password';
+            passwordInput.type = isHidden ? 'text' : 'password';
+            eyeIcon.className = isHidden ? 'ph ph-eye-slash' : 'ph ph-eye';
+        });
+
+        /* ── Input focus ring ── */
+        document.querySelectorAll('.lg-input').forEach(input => {
+            input.addEventListener('focus', () => input.closest('.lg-input-wrap').classList.add('focused'));
+            input.addEventListener('blur',  () => input.closest('.lg-input-wrap').classList.remove('focused'));
+        });
+
+        /* ── Bottom Sheet ── */
+        const sheet    = document.getElementById('bs-sheet');
+        const backdrop = document.getElementById('bs-backdrop');
+        const acceptBtn = document.getElementById('bs-accept');
+        const cancelBtn = document.getElementById('bs-cancel');
+        const createBtn = document.getElementById('create-account-btn');
+
+        const cb1 = document.getElementById('cb1');
+        const cb2 = document.getElementById('cb2');
+
+        function openSheet() {
+            sheet.classList.add('bs-open');
+            backdrop.classList.add('bs-open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSheet() {
+            sheet.classList.remove('bs-open');
+            backdrop.classList.remove('bs-open');
+            document.body.style.overflow = '';
+        }
+
+        function updateAccept() {
+            const allChecked = cb1.getAttribute('aria-checked') === 'true'
+                            && cb2.getAttribute('aria-checked') === 'true';
+            acceptBtn.disabled = !allChecked;
+        }
+
+        function toggleCheckbox(cb) {
+            const checked = cb.getAttribute('aria-checked') === 'true';
+            cb.setAttribute('aria-checked', String(!checked));
+            cb.classList.toggle('checked', !checked);
+            updateAccept();
+        }
+
+        cb1.addEventListener('click', (e) => { e.preventDefault(); toggleCheckbox(cb1); });
+        cb2.addEventListener('click', (e) => { e.preventDefault(); toggleCheckbox(cb2); });
+        cb1.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleCheckbox(cb1); } });
+        cb2.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleCheckbox(cb2); } });
+
+        createBtn.addEventListener('click', openSheet);
+        cancelBtn.addEventListener('click', closeSheet);
+        backdrop.addEventListener('click', closeSheet);
+
+        acceptBtn.addEventListener('click', () => {
+            window.location.href = 'signup-flow.html';
+        });
+    </script>
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        // Auto-trigger the bottom sheet when ?demo=bottomsheet is present.
+        // Replay handler reopens it cleanly without a full page reload.
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('demo') === 'bottomsheet') {
+            setTimeout(openSheet, 350);
+            window.__hfReplay = function () {
+                // Reset checkbox state
+                cb1.setAttribute('aria-checked', 'false');
+                cb1.classList.remove('checked');
+                cb2.setAttribute('aria-checked', 'false');
+                cb2.classList.remove('checked');
+                updateAccept();
+                closeSheet();
+                setTimeout(openSheet, 250);
+            };
+        }
+    </script>
+</body>
+
+</html>

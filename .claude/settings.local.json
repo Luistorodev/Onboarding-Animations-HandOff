@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find 'C:/Users/luisp/OneDrive/Escritorio/Dev Projects/Prototipo-app' -type f -name *ashboard*)",
+      "Bash(grep -rl \"gradient\\\\|animat.*stroke\\\\|border.*gradient\\\\|LinearGradient\" 'C:/Users/luisp/OneDrive/Escritorio/Dev Projects/Prototipo-app' --include=*.tsx --include=*.ts --include=*.jsx --include=*.js)"
+    ]
+  }
+}

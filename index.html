@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ontop — Animations Handoff</title>
+
+    <!-- Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- Hub styles -->
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+
+<body class="hf-body">
+    <div class="hf-shell">
+
+        <!-- ── Header ── -->
+        <header class="hf-header">
+            <div class="hf-brand">
+                <div class="hf-brand-mark">
+                    <i class="ph ph-sparkle"></i>
+                </div>
+                <div class="hf-brand-text">
+                    <div class="eyebrow">Ontop · Onboarding</div>
+                    <h1>Animations Handoff</h1>
+                </div>
+            </div>
+            <div class="hf-meta">
+                <span class="hf-chip"><i class="ph ph-package"></i> v1.0</span>
+                <span class="hf-chip"><i class="ph ph-device-mobile"></i> Mobile · 360×780</span>
+                <span class="hf-chip"><i class="ph ph-code"></i> HTML / CSS / JS</span>
+            </div>
+        </header>
+
+        <!-- ── Intro ── -->
+        <section class="hf-intro">
+            <h2>Motion specs ready for development</h2>
+            <p>
+                A curated set of the animations that ship with the Onboarding prototype.
+                Each card opens an isolated demo so engineering can study timing, easing
+                and transitions with the surrounding UI in place. Every demo includes a
+                <strong>Replay</strong> button to re-trigger the animation as many times
+                as needed.
+            </p>
+        </section>
+
+        <!-- ── Animations grid ── -->
+        <p class="hf-section-title">11 animations · click to play</p>
+        <div class="hf-grid">
+
+            <!-- 1. Splash -->
+            <a class="hf-card" href="splash.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">01</span>
+                    <span class="hf-tag t-motion">Intro</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-play-circle"></i></div>
+                <h3 class="hf-card-title">Splash entrada</h3>
+                <p class="hf-card-desc">
+                    Video de fondo + logo con fade-in y CTAs deslizándose desde abajo
+                    al abrir la app por primera vez.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/splash.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 2. Keyboard / Form focus -->
+            <a class="hf-card" href="keyboard.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">02</span>
+                    <span class="hf-tag t-component">Component</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-keyboard"></i></div>
+                <h3 class="hf-card-title">Comportamiento de teclado en Forms</h3>
+                <p class="hf-card-desc">
+                    Form largo con scroll, teclado móvil que sube en focus y el campo
+                    activo se centra automáticamente sobre el teclado.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/keyboard.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 3. Bottom Sheet -->
+            <a class="hf-card" href="login.html?demo=bottomsheet">
+                <div class="hf-card-head">
+                    <span class="hf-num">03</span>
+                    <span class="hf-tag t-component">Component</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-arrow-square-up"></i></div>
+                <h3 class="hf-card-title">Bottom Sheet</h3>
+                <p class="hf-card-desc">
+                    Hoja inferior con scrim, slide-up con easing custom, handle visible
+                    y CTA habilitado por checkboxes.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/login.html?demo=bottomsheet</span>
+                    <span class="hf-cta">Play <i class="ph ph-play"></i></span>
+                </div>
+            </a>
+
+            <!-- 4. Success -->
+            <a class="hf-card" href="signup-flow.html?demo=success">
+                <div class="hf-card-head">
+                    <span class="hf-num">04</span>
+                    <span class="hf-tag t-feedback">Feedback</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-check-circle"></i></div>
+                <h3 class="hf-card-title">Success</h3>
+                <p class="hf-card-desc">
+                    Overlay con check icon que hace pop-in con bounce + texto "All set!"
+                    apareciendo desde abajo.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/signup-flow.html?demo=success</span>
+                    <span class="hf-cta">Play <i class="ph ph-play"></i></span>
+                </div>
+            </a>
+
+            <!-- 5. Verified -->
+            <a class="hf-card" href="verified.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">05</span>
+                    <span class="hf-tag t-feedback">Feedback</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-shield-check"></i></div>
+                <h3 class="hf-card-title">Verified</h3>
+                <p class="hf-card-desc">
+                    Badge premium con anillos pulsantes y shield apareciendo con ligera
+                    rotación al confirmar identidad.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/verified.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 6. Stroke -->
+            <a class="hf-card" href="stroke.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">06</span>
+                    <span class="hf-tag t-motion">Motion</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-magic-wand"></i></div>
+                <h3 class="hf-card-title">Stroke (metallic border)</h3>
+                <p class="hf-card-desc">
+                    Borde animado con gradiente metálico recorriendo el botón primario,
+                    se atenúa después de la primera atención.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/stroke.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 7. Banner -->
+            <a class="hf-card" href="banner.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">07</span>
+                    <span class="hf-tag t-component">Component</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-megaphone"></i></div>
+                <h3 class="hf-card-title">Banner</h3>
+                <p class="hf-card-desc">
+                    Banner promocional que entra desde abajo con easing premium y
+                    barre un shine continuo cada pocos segundos.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/banner.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 8. Highlight -->
+            <a class="hf-card" href="highlight.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">08</span>
+                    <span class="hf-tag t-motion">Motion</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-cursor-click"></i></div>
+                <h3 class="hf-card-title">Highlight de botones</h3>
+                <p class="hf-card-desc">
+                    Press-state con scale-down + ripple morado para reforzar el feedback
+                    táctil en CTAs primarios y secundarios.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/highlight.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 9. Checklist Step -->
+            <a class="hf-card" href="activation.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">09</span>
+                    <span class="hf-tag t-flow">Flow</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-list-checks"></i></div>
+                <h3 class="hf-card-title">Checklist Step</h3>
+                <p class="hf-card-desc">
+                    Anillo de progreso circular animado al cargar y cards de pasos con
+                    estados completed / active / disabled.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/activation.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 10. Address -->
+            <a class="hf-card" href="address.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">10</span>
+                    <span class="hf-tag t-flow">Flow</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-map-pin"></i></div>
+                <h3 class="hf-card-title">Address autocomplete</h3>
+                <p class="hf-card-desc">
+                    Input que se expande al escribir, sugerencias entrando en cascada y
+                    selección con check + collapse del resultado final.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/address.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+            <!-- 11. Transitions -->
+            <a class="hf-card" href="transitions.html">
+                <div class="hf-card-head">
+                    <span class="hf-num">11</span>
+                    <span class="hf-tag t-motion">Motion</span>
+                </div>
+                <div class="hf-card-icon"><i class="ph ph-arrows-left-right"></i></div>
+                <h3 class="hf-card-title">Transición entre pantallas</h3>
+                <p class="hf-card-desc">
+                    Slide horizontal con fade entre vistas, mismo easing usado para los
+                    pasos del flujo de signup y la nav del dashboard.
+                </p>
+                <div class="hf-card-foot">
+                    <span class="hf-path">/transitions.html</span>
+                    <span class="hf-cta">Open <i class="ph ph-arrow-right"></i></span>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- ── Footer ── -->
+        <footer class="hf-footer">
+            <p>
+                Built for development handoff · Each demo is self-contained ·
+                <a href="dashboard.html">Open full prototype →</a>
+            </p>
+        </footer>
+
+    </div>
+</body>
+
+</html>

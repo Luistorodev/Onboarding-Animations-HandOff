@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Address Animation</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+
+    <style>
+        .ad-stage {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 56px 16px 16px;
+        }
+
+        .ad-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 6px;
+            letter-spacing: -0.2px;
+        }
+
+        .ad-subtitle {
+            font-size: 13px;
+            color: rgba(235, 235, 245, 0.6);
+            margin-bottom: 28px;
+        }
+
+        .ad-input-wrap {
+            position: relative;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            height: 52px;
+            backdrop-filter: blur(12px);
+        }
+
+        .ad-input-wrap.is-focused {
+            border-color: rgba(122, 80, 247, 0.7);
+            background: rgba(122, 80, 247, 0.08);
+            box-shadow: 0 0 0 4px rgba(122, 80, 247, 0.18);
+            transform: translateY(-2px);
+        }
+
+        .ad-input-wrap i.ph-map-pin {
+            color: #c2adff;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .ad-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: white;
+            font-family: 'General Sans', sans-serif;
+            font-size: 15px;
+            caret-color: var(--purple-primary);
+        }
+
+        .ad-input::placeholder {
+            color: rgba(235, 235, 245, 0.35);
+        }
+
+        .ad-results {
+            margin-top: 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+        }
+
+        .ad-results.open {
+            max-height: 380px;
+            opacity: 1;
+        }
+
+        .ad-result {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateX(-12px);
+            transition: opacity 0.35s ease, transform 0.35s ease, background 0.2s;
+            cursor: pointer;
+        }
+
+        .ad-result:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .ad-results.open .ad-result {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .ad-results.open .ad-result:nth-child(1) { transition-delay: 0.05s; }
+        .ad-results.open .ad-result:nth-child(2) { transition-delay: 0.13s; }
+        .ad-results.open .ad-result:nth-child(3) { transition-delay: 0.21s; }
+        .ad-results.open .ad-result:nth-child(4) { transition-delay: 0.29s; }
+
+        .ad-result-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(122, 80, 247, 0.18);
+            color: #c2adff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .ad-result-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ad-result-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .ad-result-meta {
+            color: rgba(235, 235, 245, 0.5);
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ad-result.is-selected {
+            background: rgba(122, 80, 247, 0.14);
+        }
+
+        .ad-result.is-selected .ad-result-icon {
+            background: var(--purple-primary);
+            color: white;
+            animation: adIconPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes adIconPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.18); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container" id="adApp">
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <div class="ad-stage" id="adStage">
+                    <h3 class="ad-title">Where do you live?</h3>
+                    <p class="ad-subtitle">Start typing to find your address.</p>
+
+                    <div class="ad-input-wrap" id="adWrap">
+                        <i class="ph ph-map-pin"></i>
+                        <input class="ad-input" id="adInput" type="text"
+                               placeholder="Start typing your address" autocomplete="off">
+                    </div>
+
+                    <div class="ad-results" id="adResults">
+                        <div class="ad-result" data-idx="0">
+                            <div class="ad-result-icon"><i class="ph ph-map-pin"></i></div>
+                            <div class="ad-result-text">
+                                <p class="ad-result-title">123 Bedford Ave</p>
+                                <p class="ad-result-meta">Brooklyn, NY 11211, USA</p>
+                            </div>
+                        </div>
+                        <div class="ad-result" data-idx="1">
+                            <div class="ad-result-icon"><i class="ph ph-map-pin"></i></div>
+                            <div class="ad-result-text">
+                                <p class="ad-result-title">123 Beacon St</p>
+                                <p class="ad-result-meta">Boston, MA 02116, USA</p>
+                            </div>
+                        </div>
+                        <div class="ad-result" data-idx="2">
+                            <div class="ad-result-icon"><i class="ph ph-map-pin"></i></div>
+                            <div class="ad-result-text">
+                                <p class="ad-result-title">123 Bell Rd</p>
+                                <p class="ad-result-meta">Nashville, TN 37217, USA</p>
+                            </div>
+                        </div>
+                        <div class="ad-result" data-idx="3">
+                            <div class="ad-result-icon"><i class="ph ph-map-pin"></i></div>
+                            <div class="ad-result-text">
+                                <p class="ad-result-title">123 Berry St</p>
+                                <p class="ad-result-meta">San Francisco, CA 94107, USA</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Address autocomplete</h3>
+            <p>Focus animado, sugerencias entrando en cascada y selección con feedback en el icono.</p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        const wrap    = document.getElementById('adWrap');
+        const input   = document.getElementById('adInput');
+        const results = document.getElementById('adResults');
+        const items   = document.querySelectorAll('.ad-result');
+
+        input.addEventListener('focus', () => wrap.classList.add('is-focused'));
+        input.addEventListener('blur',  () => wrap.classList.remove('is-focused'));
+
+        input.addEventListener('input', () => {
+            const hasText = input.value.trim().length > 0;
+            results.classList.toggle('open', hasText);
+        });
+
+        items.forEach(it => {
+            it.addEventListener('click', () => {
+                items.forEach(i => i.classList.remove('is-selected'));
+                it.classList.add('is-selected');
+                input.value = it.querySelector('.ad-result-title').textContent
+                            + ', ' + it.querySelector('.ad-result-meta').textContent;
+                setTimeout(() => results.classList.remove('open'), 350);
+            });
+        });
+
+        // Demo runner — types a query, opens results, picks #2
+        function runDemo() {
+            input.value = '';
+            results.classList.remove('open');
+            items.forEach(i => i.classList.remove('is-selected'));
+
+            input.focus();
+            const text = '123 B';
+            let i = 0;
+
+            setTimeout(function step() {
+                if (i < text.length) {
+                    input.value += text[i++];
+                    input.dispatchEvent(new Event('input'));
+                    setTimeout(step, 110);
+                } else {
+                    setTimeout(() => {
+                        items[1].click();
+                    }, 900);
+                }
+            }, 500);
+        }
+
+        runDemo();
+        window.__hfReplay = runDemo;
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Signup Flow</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/signup-flow.css">
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+<body>
+    <div class="presentation-wrapper">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+            
+            <div class="app-container signup-container">
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Header -->
+                <div class="su-header">
+                    <button class="su-back-btn" id="su-back" aria-label="Go back">
+                        <i class="ph ph-arrow-left"></i>
+                    </button>
+                    <div class="su-progress-wrapper">
+                        <div class="su-progress-bar" id="su-progress"></div>
+                    </div>
+                    <div class="su-header-spacer"></div>
+                </div>
+
+                <!-- Steps Container -->
+                <div class="su-steps-container">
+
+                    <!-- STEP 1: OTP -->
+                    <div class="su-step active" id="step-1">
+                        <h1 class="su-title">Check your inbox!</h1>
+                        <p class="su-subtitle">Put the 6-digit code we sent to your email</p>
+                        
+                        <div class="su-otp-group">
+                            <input type="text" class="su-otp-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                            <input type="text" class="su-otp-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                            <input type="text" class="su-otp-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                            <input type="text" class="su-otp-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                            <input type="text" class="su-otp-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                            <input type="text" class="su-otp-input" maxlength="1" pattern="[0-9]*" inputmode="numeric">
+                        </div>
+                        
+                        <div class="su-resend-wrapper">
+                            <a href="#" class="su-resend-link">
+                                Resend code
+                                <i class="ph ph-arrows-clockwise"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- STEP 2: COUNTRY -->
+                    <div class="su-step" id="step-2">
+                        <h1 class="su-title">Where do you currently live?</h1>
+                        <p class="su-subtitle">This helps us set things up based on your location</p>
+                        
+                        <div class="su-field">
+                            <label class="su-label">Country of residence</label>
+                            <div class="su-select-wrap" id="country-select-wrap">
+                                <div class="su-select-display">
+                                    <div class="su-select-value">
+                                        <span class="su-select-placeholder">Select one</span>
+                                    </div>
+                                    <i class="ph ph-caret-down"></i>
+                                </div>
+                                <select id="country-select" class="su-hidden-select">
+                                    <option value="" disabled selected>Select one</option>
+                                    <option value="CO">🇨🇴 Colombia</option>
+                                    <option value="US">🇺🇸 United States</option>
+                                    <option value="MX">🇲🇽 Mexico</option>
+                                    <option value="AR">🇦🇷 Argentina</option>
+                                </select>
+                            </div>
+                            <p class="su-hint">This is your permanent address (not a temporary stay).</p>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: WORKER TYPE -->
+                    <div class="su-step" id="step-3">
+                        <h1 class="su-title">How will you work with us?</h1>
+                        <p class="su-subtitle">Choose if you're working as an individual or a business</p>
+                        
+                        <div class="su-radio-group">
+                            <label class="su-radio-card" tabindex="0">
+                                <input type="radio" name="worker_type" value="individual" class="su-hidden-radio">
+                                <div class="su-radio-icon">
+                                    <i class="ph ph-user"></i>
+                                </div>
+                                <div class="su-radio-content">
+                                    <div class="su-radio-title">As an individual</div>
+                                    <div class="su-radio-desc">You work and get paid under your personal name.</div>
+                                </div>
+                                <div class="su-radio-circle"></div>
+                            </label>
+
+                            <label class="su-radio-card" tabindex="0">
+                                <input type="radio" name="worker_type" value="company" class="su-hidden-radio">
+                                <div class="su-radio-icon">
+                                    <i class="ph ph-briefcase"></i>
+                                </div>
+                                <div class="su-radio-content">
+                                    <div class="su-radio-title">As a company</div>
+                                    <div class="su-radio-desc">You provide services through a registered business or entity.</div>
+                                </div>
+                                <div class="su-radio-circle"></div>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="su-footer">
+                    <button class="su-btn su-btn--primary" id="su-continue" disabled>
+                        Continue
+                    </button>
+                    <div class="su-home-indicator"></div>
+                </div>
+
+                <!-- Success Overlay -->
+                <div class="su-success-overlay" id="su-success-overlay">
+                    <div class="su-success-icon">
+                        <i class="ph ph-check"></i>
+                    </div>
+                    <div class="su-success-text">All set!</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="js/signup-flow.js"></script>
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        // Auto-trigger the success overlay when ?demo=success is present
+        function fireSuccess() {
+            const overlay = document.getElementById('su-success-overlay');
+            if (!overlay) return;
+            overlay.classList.remove('active');
+            void overlay.offsetWidth;
+            overlay.classList.add('active');
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('demo') === 'success') {
+            window.addEventListener('load', () => setTimeout(fireSuccess, 400));
+            window.__hfReplay = fireSuccess;
+        }
+    </script>
+</body>
+</html>

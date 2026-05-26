@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Form Keyboard Behavior</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+    <link rel="stylesheet" href="css/keyboard.css">
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <div class="kb-app" id="kbApp">
+
+                    <!-- Status Bar -->
+                    <div class="status-bar light">
+                        <span class="time">9:41</span>
+                        <div class="status-icons">
+                            <i class="ph-fill ph-cell-signal-full"></i>
+                            <i class="ph-fill ph-wifi-high"></i>
+                            <i class="ph-fill ph-battery-full"></i>
+                        </div>
+                    </div>
+
+                    <!-- Content area (shrinks when keyboard opens) -->
+                    <div class="kb-area">
+
+                        <!-- Header -->
+                        <div class="kb-header">
+                            <h1 class="kb-title">Personal details</h1>
+                            <p class="kb-sub">Tell us a bit about you. Tap any field to see how the keyboard behaves.</p>
+                        </div>
+
+                        <!-- Scrollable form -->
+                        <div class="kb-scroll" id="kbScroll">
+                            <form class="kb-form" autocomplete="off" novalidate>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-fullname">Full name</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-fullname" type="text" placeholder="Ana Smith">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-email">Email</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-email" type="email" placeholder="example@gmail.com">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-phone">Phone number</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-phone" type="tel" placeholder="+1 (555) 000-0000">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-dob">Date of birth</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-dob" type="text" placeholder="MM / DD / YYYY">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-addr1">Address line 1</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-addr1" type="text" placeholder="Street and number">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-addr2">Address line 2</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-addr2" type="text" placeholder="Apt, suite, unit (optional)">
+                                    </div>
+                                </div>
+
+                                <div class="kb-row">
+                                    <div class="kb-field">
+                                        <label class="kb-label" for="kb-city">City</label>
+                                        <div class="kb-input-wrap">
+                                            <input class="kb-input" id="kb-city" type="text" placeholder="City">
+                                        </div>
+                                    </div>
+                                    <div class="kb-field">
+                                        <label class="kb-label" for="kb-zip">ZIP</label>
+                                        <div class="kb-input-wrap">
+                                            <input class="kb-input" id="kb-zip" type="text" placeholder="ZIP">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-state">State / Region</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-state" type="text" placeholder="State or region">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-country">Country</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-country" type="text" placeholder="Country of residence">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-tax">Tax ID</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-tax" type="text" placeholder="SSN, EIN or local tax ID">
+                                    </div>
+                                </div>
+
+                                <div class="kb-field">
+                                    <label class="kb-label" for="kb-occupation">Occupation</label>
+                                    <div class="kb-input-wrap">
+                                        <input class="kb-input" id="kb-occupation" type="text" placeholder="What do you do?">
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <!-- CTA — sticks to the bottom of the visible area -->
+                        <div class="kb-cta-wrap">
+                            <button class="kb-cta" id="kbCta" type="button">Continue</button>
+                        </div>
+
+                    </div><!-- /.kb-area -->
+
+                    <!-- ── Mobile Keyboard (iOS-style) ── -->
+                    <div class="kb-keyboard" id="kbKeyboard" aria-hidden="true">
+                        <div class="kb-suggest">
+                            <span class="quoted" data-suggest=""></span>
+                            <span data-suggest="">I</span>
+                            <span data-suggest="">The</span>
+                        </div>
+
+                        <div class="kb-row-keys">
+                            <button class="kb-key" data-k="q">q</button>
+                            <button class="kb-key" data-k="w">w</button>
+                            <button class="kb-key" data-k="e">e</button>
+                            <button class="kb-key" data-k="r">r</button>
+                            <button class="kb-key" data-k="t">t</button>
+                            <button class="kb-key" data-k="y">y</button>
+                            <button class="kb-key" data-k="u">u</button>
+                            <button class="kb-key" data-k="i">i</button>
+                            <button class="kb-key" data-k="o">o</button>
+                            <button class="kb-key" data-k="p">p</button>
+                        </div>
+
+                        <div class="kb-row-keys kb-row-2">
+                            <button class="kb-key" data-k="a">a</button>
+                            <button class="kb-key" data-k="s">s</button>
+                            <button class="kb-key" data-k="d">d</button>
+                            <button class="kb-key" data-k="f">f</button>
+                            <button class="kb-key" data-k="g">g</button>
+                            <button class="kb-key" data-k="h">h</button>
+                            <button class="kb-key" data-k="j">j</button>
+                            <button class="kb-key" data-k="k">k</button>
+                            <button class="kb-key" data-k="l">l</button>
+                        </div>
+
+                        <div class="kb-row-keys">
+                            <button class="kb-key kb-mod" data-k="shift" aria-label="Shift">
+                                <i class="ph ph-arrow-fat-up"></i>
+                            </button>
+                            <button class="kb-key" data-k="z">z</button>
+                            <button class="kb-key" data-k="x">x</button>
+                            <button class="kb-key" data-k="c">c</button>
+                            <button class="kb-key" data-k="v">v</button>
+                            <button class="kb-key" data-k="b">b</button>
+                            <button class="kb-key" data-k="n">n</button>
+                            <button class="kb-key" data-k="m">m</button>
+                            <button class="kb-key kb-mod" data-k="backspace" aria-label="Delete">
+                                <i class="ph ph-backspace"></i>
+                            </button>
+                        </div>
+
+                        <div class="kb-row-keys">
+                            <button class="kb-key kb-mod" data-k="123">123</button>
+                            <button class="kb-key kb-mod" data-k="emoji" aria-label="Emoji">
+                                <i class="ph ph-smiley"></i>
+                            </button>
+                            <button class="kb-key kb-space" data-k="space">space</button>
+                            <button class="kb-key kb-return" data-k="return">return</button>
+                        </div>
+                    </div>
+
+                </div><!-- /.kb-app -->
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Comportamiento de teclado en Forms</h3>
+            <p>
+                Tap cualquier campo. El teclado sube, el área de contenido se reduce y el campo
+                seleccionado se centra automáticamente sobre el teclado (focus into view).
+            </p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        const app       = document.getElementById('kbApp');
+        const keyboard  = document.getElementById('kbKeyboard');
+        const scroller  = document.getElementById('kbScroll');
+        const inputs    = document.querySelectorAll('.kb-input');
+        const wraps     = document.querySelectorAll('.kb-input-wrap');
+        const cta       = document.getElementById('kbCta');
+
+        let activeInput = null;
+
+        // ── Keyboard open/close ────────────────────────────
+        function openKeyboard() {
+            app.classList.add('is-kb-open');
+        }
+
+        function closeKeyboard() {
+            app.classList.remove('is-kb-open');
+            activeInput = null;
+        }
+
+        // ── Center the focused input above the keyboard ────
+        function scrollIntoCenter(el) {
+            // Wait for the layout to update (kb-area's bottom changes)
+            requestAnimationFrame(() => {
+                const cRect = scroller.getBoundingClientRect();
+                const eRect = el.getBoundingClientRect();
+                // Position field centered within the visible scroll area
+                const target = el.offsetTop - (scroller.clientHeight / 2) + (el.offsetHeight / 2);
+                scroller.scrollTo({
+                    top: Math.max(0, target),
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // ── Input focus management ─────────────────────────
+        inputs.forEach(input => {
+            const wrap = input.closest('.kb-input-wrap');
+
+            input.addEventListener('focus', () => {
+                wrap.classList.add('focused');
+                activeInput = input;
+                openKeyboard();
+                // Allow .kb-area "bottom" transition to start, then scroll
+                setTimeout(() => scrollIntoCenter(wrap), 80);
+            });
+
+            input.addEventListener('blur', () => {
+                wrap.classList.remove('focused');
+                // Defer close to give time for taps on keyboard / other inputs
+                setTimeout(() => {
+                    if (!document.activeElement || !document.activeElement.classList.contains('kb-input')) {
+                        closeKeyboard();
+                    }
+                }, 150);
+            });
+        });
+
+        // ── Virtual keyboard typing ────────────────────────
+        keyboard.addEventListener('mousedown', (e) => {
+            // Prevent input from losing focus when tapping keys
+            e.preventDefault();
+        });
+
+        keyboard.addEventListener('click', (e) => {
+            const key = e.target.closest('.kb-key');
+            if (!key || !activeInput) return;
+            const k = key.dataset.k;
+
+            if (k === 'backspace') {
+                activeInput.value = activeInput.value.slice(0, -1);
+            } else if (k === 'space') {
+                activeInput.value += ' ';
+            } else if (k === 'return') {
+                // Move focus to the next input, or close keyboard
+                const idx = Array.from(inputs).indexOf(activeInput);
+                const next = inputs[idx + 1];
+                if (next) {
+                    next.focus();
+                } else {
+                    activeInput.blur();
+                    closeKeyboard();
+                }
+            } else if (k === 'shift' || k === '123' || k === 'emoji') {
+                // Visual-only modifiers in this demo
+            } else if (k && k.length === 1) {
+                activeInput.value += k;
+            }
+        });
+
+        // ── Tap outside form closes keyboard ───────────────
+        document.addEventListener('mousedown', (e) => {
+            if (
+                !e.target.closest('.kb-input-wrap') &&
+                !e.target.closest('.kb-keyboard')
+            ) {
+                if (activeInput) activeInput.blur();
+            }
+        });
+
+        // ── CTA ───────────────────────────────────────────
+        cta.addEventListener('click', () => {
+            if (activeInput) activeInput.blur();
+            closeKeyboard();
+        });
+
+        // ── Replay ────────────────────────────────────────
+        window.__hfReplay = function () {
+            inputs.forEach(i => { i.value = ''; i.blur(); });
+            scroller.scrollTo({ top: 0, behavior: 'smooth' });
+            closeKeyboard();
+            // Auto-demo: focus the 5th field after a beat to showcase the scroll
+            setTimeout(() => {
+                inputs[4].focus();
+            }, 600);
+        };
+
+        // Auto-demo on load (helps reviewers see the behavior immediately)
+        setTimeout(() => {
+            if (!activeInput) inputs[4].focus();
+        }, 700);
+    </script>
+</body>
+
+</html>

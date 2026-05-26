@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Button Highlight</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+
+    <style>
+        .hl-btn {
+            position: relative;
+            overflow: visible;
+        }
+
+        .hl-btn.is-pressed {
+            transform: scale(0.97);
+            transition: transform 0.12s ease;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame" style="position: relative;">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <div class="demo-stage" id="hlStage">
+                    <p class="demo-stage-eyebrow">Animation 08</p>
+                    <h3 class="demo-stage-title">Button highlight</h3>
+
+                    <button class="demo-btn-primary hl-btn" id="hlPrimary">Continue</button>
+                    <button class="demo-btn-secondary hl-btn" id="hlSecondary">Skip for now</button>
+
+                    <p style="text-align:center; color: rgba(235,235,245,0.5); font-size: 12px; margin-top:8px;">
+                        Tap los botones o usa <strong>Replay</strong> para ver el ripple.
+                    </p>
+
+                    <span class="demo-tap" id="tapPing"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Highlight de botones</h3>
+            <p>Scale-down + ripple morado refuerza el feedback táctil en cada press de un CTA.</p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        const tap = document.getElementById('tapPing');
+        const buttons = document.querySelectorAll('.hl-btn');
+
+        function fireTap(x, y, btn) {
+            // Coordinates relative to .demo-stage (the offsetParent of .demo-tap)
+            const stage = document.getElementById('hlStage');
+            const stageRect = stage.getBoundingClientRect();
+            tap.style.left = (x - stageRect.left) + 'px';
+            tap.style.top = (y - stageRect.top) + 'px';
+            tap.classList.remove('fire');
+            void tap.offsetWidth;
+            tap.classList.add('fire');
+
+            btn.classList.add('is-pressed');
+            setTimeout(() => btn.classList.remove('is-pressed'), 180);
+        }
+
+        buttons.forEach(btn => {
+            btn.addEventListener('pointerdown', (e) => {
+                fireTap(e.clientX, e.clientY, btn);
+            });
+        });
+
+        // Auto-fire once on load + replay
+        function autoFire() {
+            const btn = document.getElementById('hlPrimary');
+            const r = btn.getBoundingClientRect();
+            setTimeout(() => fireTap(r.left + r.width / 2, r.top + r.height / 2, btn), 300);
+        }
+        autoFire();
+
+        window.__hfReplay = autoFire;
+    </script>
+</body>
+
+</html>

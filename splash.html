@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Splash</title>
+
+    <!-- Fonts: General Sans for clean, premium financial look -->
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+
+    <!-- Phosphor Icons for high-fidelity vector icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+</head>
+
+<body>
+    <a href="index.html" class="hf-back-pill" aria-label="Back to handoff">
+        <i class="ph ph-arrow-left"></i>
+        <span>Back to Handoff</span>
+    </a>
+
+    <div class="presentation-wrapper">
+        <div class="device-frame">
+            <div class="app-container splash-container">
+                <!-- Video Background -->
+                <video class="splash-video" autoplay loop muted playsinline>
+                    <source src="assets/IntroVideo_v3.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+
+                <!-- Overlay to tint video to match Figma dark mode and ensure text legibility -->
+                <div class="splash-overlay"></div>
+
+                <!-- Status Bar Mock - Light Version for Dark Background -->
+                <div class="status-bar light">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <!-- Splash Logo -->
+                <img src="assets/Ontop-isologo.png" alt="Ontop Logo" class="splash-logo">
+
+                <!-- CTA Buttons -->
+                <div class="splash-content">
+                    <a href="onboarding.html" class="splash-btn splash-btn-secondary">Create an account</a>
+                    <a href="dashboard-2.html" class="splash-btn splash-btn-primary">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="hf-replay-pill" id="replayBtn" aria-label="Replay splash">
+        <i class="ph ph-arrow-clockwise"></i>
+        <span>Replay</span>
+    </button>
+
+    <script>
+        // Replay logic: re-mount the video + reset CSS animations
+        document.getElementById('replayBtn').addEventListener('click', () => {
+            location.reload();
+        });
+    </script>
+</body>
+
+</html>
