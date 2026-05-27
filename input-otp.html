@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Input OTP Animation</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+    <link rel="stylesheet" href="css/input-otp.css">
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <div class="otp-app">
+                    <!-- Status Bar -->
+                    <div class="status-bar light">
+                        <span class="time">9:41</span>
+                        <div class="status-icons">
+                            <i class="ph-fill ph-cell-signal-full"></i>
+                            <i class="ph-fill ph-wifi-high"></i>
+                            <i class="ph-fill ph-battery-full"></i>
+                        </div>
+                    </div>
+
+                    <!-- Header -->
+                    <div class="otp-header">
+                        <div class="otp-eyebrow">Verification</div>
+                        <h1 class="otp-title">Enter the 6-digit code</h1>
+                        <p class="otp-sub">
+                            We sent a code to <strong>+1 (555) 010-2034</strong>.
+                            It may take a moment to arrive.
+                        </p>
+                    </div>
+
+                    <!-- OTP Cells -->
+                    <div class="otp-cells" id="otpCells" role="group" aria-label="One-time code">
+                        <!-- 6 cells injected by JS so each one has its own digit slot -->
+                    </div>
+
+                    <!-- Resend -->
+                    <p class="otp-resend">
+                        Didn't get it?<a href="#" id="otpResend">Resend code</a>
+                    </p>
+
+                    <!-- CTA -->
+                    <div class="otp-cta-wrap">
+                        <button class="otp-cta" id="otpCta" type="button" disabled>Verify</button>
+                    </div>
+
+                    <!-- Number pad -->
+                    <div class="otp-pad" id="otpPad" aria-label="Number pad">
+                        <button class="otp-key" type="button" data-key="1">1</button>
+                        <button class="otp-key" type="button" data-key="2">2</button>
+                        <button class="otp-key" type="button" data-key="3">3</button>
+                        <button class="otp-key" type="button" data-key="4">4</button>
+                        <button class="otp-key" type="button" data-key="5">5</button>
+                        <button class="otp-key" type="button" data-key="6">6</button>
+                        <button class="otp-key" type="button" data-key="7">7</button>
+                        <button class="otp-key" type="button" data-key="8">8</button>
+                        <button class="otp-key" type="button" data-key="9">9</button>
+                        <button class="otp-key is-empty" tabindex="-1" aria-hidden="true"></button>
+                        <button class="otp-key" type="button" data-key="0">0</button>
+                        <button class="otp-key is-action" type="button" data-key="back" aria-label="Backspace">
+                            <i class="ph ph-backspace"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Input OTP Animation</h3>
+            <p>
+                Cross-fade numérico vertical: cada dígito ingresado entra desde abajo con
+                fade-in mientras el dígito anterior (si existe) sale hacia arriba con fade-out.
+                Teclado simulado para mostrar la animación claramente.
+            </p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        // ── Config ───────────────────────────────────────────
+        const CELL_COUNT = 6;
+        const cellsEl = document.getElementById('otpCells');
+        const padEl = document.getElementById('otpPad');
+        const ctaEl = document.getElementById('otpCta');
+        const resendEl = document.getElementById('otpResend');
+
+        // Internal state: array of digits, length 0..CELL_COUNT
+        const code = [];
+        let activeIndex = 0;
+
+        // ── Build cells ──────────────────────────────────────
+        function buildCells() {
+            cellsEl.innerHTML = '';
+            for (let i = 0; i < CELL_COUNT; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'otp-cell';
+                cell.dataset.index = String(i);
+                cell.innerHTML = '<span class="otp-caret" aria-hidden="true"></span>';
+                cellsEl.appendChild(cell);
+            }
+            updateFocusState();
+        }
+
+        function getCell(i) {
+            return cellsEl.children[i];
+        }
+
+        function updateFocusState() {
+            for (let i = 0; i < CELL_COUNT; i++) {
+                const cell = getCell(i);
+                cell.classList.toggle('is-focused', i === activeIndex);
+                cell.classList.toggle('is-filled', code[i] != null);
+            }
+            ctaEl.disabled = code.length < CELL_COUNT;
+        }
+
+        // ── Cross-fade numeric transition ────────────────────
+        // The new digit slides up from below and fades in while the
+        // previous one (if any) slides up out of the cell, fading out
+        // simultaneously. Both run on the same easing curve so they
+        // feel like a single cohesive movement.
+        function setDigit(index, digit) {
+            const cell = getCell(index);
+            if (!cell) return;
+
+            // Find any existing "current" digit and mark it as leaving
+            const previous = cell.querySelector('.otp-digit.is-current');
+            if (previous) {
+                previous.classList.remove('is-current');
+                previous.classList.add('is-leaving');
+                // Clean up the leaving node after the transition resolves
+                previous.addEventListener('transitionend', () => previous.remove(), { once: true });
+                // Safety fallback in case transitionend is missed
+                setTimeout(() => previous.remove(), 500);
+            }
+
+            // Mount the new digit in its starting position
+            const incoming = document.createElement('span');
+            incoming.className = 'otp-digit';
+            incoming.textContent = digit;
+            cell.appendChild(incoming);
+
+            // Force layout so the starting transform is committed before
+            // we promote the element to "current" and trigger the tween.
+            void incoming.getBoundingClientRect();
+            requestAnimationFrame(() => {
+                incoming.classList.add('is-current');
+            });
+
+            // Subtle press pulse on the cell to reinforce the feedback
+            cell.classList.remove('is-pulsing');
+            void cell.offsetWidth;
+            cell.classList.add('is-pulsing');
+        }
+
+        function clearDigit(index) {
+            const cell = getCell(index);
+            if (!cell) return;
+            // Slide every digit out the same way the incoming one came in
+            cell.querySelectorAll('.otp-digit').forEach((digit) => {
+                digit.classList.remove('is-current');
+                digit.classList.add('is-leaving');
+                digit.addEventListener('transitionend', () => digit.remove(), { once: true });
+                setTimeout(() => digit.remove(), 500);
+            });
+        }
+
+        // ── Public ops ───────────────────────────────────────
+        function pushDigit(d) {
+            if (code.length >= CELL_COUNT) return;
+            const i = code.length;
+            code.push(d);
+            // Move focus to the next empty slot. When the code is
+            // complete, activeIndex lands on CELL_COUNT (out of range)
+            // so no cell remains marked as focused.
+            activeIndex = code.length;
+            setDigit(i, d);
+            updateFocusState();
+
+            // When the code is complete, simulate a verify after a beat
+            if (code.length === CELL_COUNT) {
+                setTimeout(autoVerify, 450);
+            }
+        }
+
+        function popDigit() {
+            if (code.length === 0) return;
+            const i = code.length - 1;
+            code.pop();
+            activeIndex = i;
+            clearDigit(i);
+            updateFocusState();
+        }
+
+        function autoVerify() {
+            ctaEl.textContent = 'Verifying…';
+            ctaEl.disabled = true;
+            setTimeout(() => {
+                ctaEl.textContent = 'Verified';
+                ctaEl.style.background = 'var(--green-success, #6ed085)';
+                ctaEl.style.boxShadow = '0 12px 28px rgba(110, 208, 133, 0.35)';
+            }, 800);
+        }
+
+        function resetAll() {
+            code.length = 0;
+            activeIndex = 0;
+            buildCells();
+            ctaEl.textContent = 'Verify';
+            ctaEl.disabled = true;
+            ctaEl.style.background = '';
+            ctaEl.style.boxShadow = '';
+        }
+
+        // ── Pad interactions ────────────────────────────────
+        padEl.addEventListener('click', (e) => {
+            const key = e.target.closest('.otp-key');
+            if (!key || key.classList.contains('is-empty')) return;
+            const k = key.dataset.key;
+
+            // Visual press feedback
+            key.classList.add('is-pressed');
+            setTimeout(() => key.classList.remove('is-pressed'), 130);
+
+            if (k === 'back') {
+                popDigit();
+            } else if (k && /^\d$/.test(k)) {
+                pushDigit(k);
+            }
+        });
+
+        // Hardware keyboard support for desktop reviewers
+        document.addEventListener('keydown', (e) => {
+            if (/^\d$/.test(e.key)) {
+                pushDigit(e.key);
+                pulseKey(e.key);
+            } else if (e.key === 'Backspace') {
+                popDigit();
+                pulseKey('back');
+            }
+        });
+
+        function pulseKey(k) {
+            const btn = padEl.querySelector(`.otp-key[data-key="${k}"]`);
+            if (!btn) return;
+            btn.classList.add('is-pressed');
+            setTimeout(() => btn.classList.remove('is-pressed'), 130);
+        }
+
+        // CTA → reset to "Verified" success state on click (or no-op)
+        ctaEl.addEventListener('click', () => {
+            if (code.length === CELL_COUNT) autoVerify();
+        });
+
+        resendEl.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetAll();
+        });
+
+        // ── Replay ──────────────────────────────────────────
+        // Just clears the current state so the reviewer can re-enter
+        // the digits manually. No auto-typing — the user controls the
+        // animation by tapping the on-screen pad (or using a hardware
+        // keyboard with 0-9 and Backspace).
+        window.__hfReplay = function () {
+            resetAll();
+        };
+
+        // Boot
+        buildCells();
+    </script>
+</body>
+
+</html>
