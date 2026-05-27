@@ -10,6 +10,101 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/handoff.css">
+
+    <style>
+        /* ── Auto hand-off to the home screen ──────────────────────
+           Five seconds after the verified animation finishes, the
+           whole stage gently scales back and fades out while the
+           real dashboard slides up from the bottom (inside an iframe
+           so we can reuse the production home screen as-is). */
+
+        #verifiedApp {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #verifiedStage {
+            transition:
+                opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #verifiedApp.is-handing-off #verifiedStage {
+            opacity: 0;
+            transform: scale(0.94);
+        }
+
+        .verified-home-shell {
+            position: absolute;
+            inset: 0;
+            border-radius: 32px;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(100%);
+            transition:
+                opacity 0.55s ease,
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        #verifiedApp.is-handing-off .verified-home-shell {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* The iframe loads the full dashboard page (which includes its
+           own device frame). We blow it up so the inner phone screen
+           perfectly fills the verified frame, and clip the surrounding
+           page chrome by hiding overflow on the shell. */
+        .verified-home-shell iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;        /* enough to give the dashboard breathing room */
+            height: 1240px;
+            border: 0;
+            background: transparent;
+            pointer-events: auto;
+        }
+
+        /* Subtle hint that this is an automated transition */
+        .verified-handoff-pill {
+            position: absolute;
+            top: 16px;
+            left: 50%;
+            transform: translate(-50%, -8px);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 99px;
+            background: rgba(15, 11, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.75);
+            font-family: 'General Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .verified-handoff-pill.is-visible {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .verified-handoff-pill i {
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,22 +134,84 @@
                         <p>You're all set. Your account is ready to go global.</p>
                     </div>
                 </div>
+
+                <!-- Auto hand-off: real dashboard mounted inside an iframe -->
+                <div class="verified-home-shell" id="verifiedHomeShell" aria-hidden="true">
+                    <iframe
+                        src="dashboard.html"
+                        title="Home preview"
+                        loading="lazy"
+                        scrolling="no"></iframe>
+                </div>
+
+                <!-- Tiny pill explaining the auto transition to reviewers -->
+                <div class="verified-handoff-pill" id="verifiedHandoffPill">
+                    <i class="ph ph-arrow-bend-right-down"></i>
+                    <span>Auto hand-off to home</span>
+                </div>
             </div>
         </div>
 
         <div class="hf-demo-label">
             <h3>Verified</h3>
-            <p>Pop-in del shield + anillos pulsantes y reveal del título cuando se confirma identidad.</p>
+            <p>
+                Pop-in del shield + anillos pulsantes y reveal del título cuando se confirma
+                identidad. Tras 5 segundos, transición automática al home de la app.
+            </p>
         </div>
     </div>
 
     <script src="js/handoff-controls.js"></script>
     <script>
-        // Custom replay handler — restart all CSS animations without a full reload
+        // ── Verified → Home auto hand-off ─────────────────────────
+        // The verified-text reveal finishes around ~1.5s in. We wait
+        // 5s from page load (per the brief) and then slide the home
+        // screen up from the bottom while the verified stage fades.
+        const HANDOFF_DELAY_MS = 5000;
+
+        const appEl = document.getElementById('verifiedApp');
+        const stageEl = document.getElementById('verifiedStage');
+        const shellEl = document.getElementById('verifiedHomeShell');
+        const pillEl = document.getElementById('verifiedHandoffPill');
+        const iframeEl = shellEl.querySelector('iframe');
+
+        let handoffTimer = null;
+
+        function startHandoffCountdown() {
+            clearTimeout(handoffTimer);
+            // Reveal the helper pill a beat after the verified text settles
+            setTimeout(() => pillEl.classList.add('is-visible'), 1800);
+            handoffTimer = setTimeout(() => {
+                appEl.classList.add('is-handing-off');
+                pillEl.classList.remove('is-visible');
+            }, HANDOFF_DELAY_MS);
+        }
+
+        startHandoffCountdown();
+
+        // Replay handler — restart all CSS animations without reloading
+        // the page, then re-run the hand-off countdown.
         window.__hfReplay = function () {
-            const stage = document.getElementById('verifiedStage');
-            const clone = stage.cloneNode(true);
-            stage.replaceWith(clone);
+            // Cancel any pending auto hand-off
+            clearTimeout(handoffTimer);
+            // Reset hand-off layers
+            appEl.classList.remove('is-handing-off');
+            pillEl.classList.remove('is-visible');
+            // Force the iframe to reload so the home transition feels
+            // fresh on every replay. Reassigning .src is the cleanest
+            // cross-browser way to do this.
+            iframeEl.src = 'about:blank';
+            requestAnimationFrame(() => {
+                iframeEl.src = 'dashboard.html';
+            });
+            // Restart the verified-stage CSS animations by cloning the
+            // node — same trick as before, but we re-grab the new ref.
+            const fresh = stageEl.cloneNode(true);
+            stageEl.replaceWith(fresh);
+            // Update closure reference to the new element
+            window.__verifiedStageRef = fresh;
+            // Kick the countdown again
+            startHandoffCountdown();
         };
     </script>
 </body>

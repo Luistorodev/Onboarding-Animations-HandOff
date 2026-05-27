@@ -193,24 +193,63 @@
 
     <script src="js/handoff-controls.js"></script>
     <script>
-        // Trigger the progress animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const circle = document.querySelector('.ac-progress-ring');
-            const radius = circle.r.baseVal.value;
-            const circumference = radius * 2 * Math.PI;
+        // ── Animation orchestrator ─────────────────────────────────
+        // Plays the activation entrance: progress ring + staggered
+        // slide-up of the step cards. Wired to both initial load and
+        // the floating Replay pill so it can be re-played cleanly
+        // without a full page reload (avoids white flash + caching
+        // glitches that made the ring appear to play backwards).
+        const ringEl = document.querySelector('.ac-progress-ring');
+        const stackEl = document.querySelector('.ac-steps-stack');
+        const TARGET_PERCENT = 20;
+        const STEP_COUNT = stackEl ? stackEl.children.length : 0;
+        const STAGGER_MS = 90;
+        const ENTRANCE_DURATION = 700;
+        const RING_LEAD_MS = 120;
 
-            circle.style.strokeDasharray = `${circumference} ${circumference}`;
-            circle.style.strokeDashoffset = circumference;
+        function playActivation() {
+            if (!ringEl || !stackEl) return;
 
-            // Set progress to 20%
-            const percent = 20;
-            const offset = circumference - (percent / 100) * circumference;
+            // ── Reset everything to the "before animation" state ──
+            stackEl.classList.remove('is-in', 'is-settled');
 
-            // Delay for smooth entry
-            setTimeout(() => {
-                circle.style.strokeDashoffset = offset;
-            }, 300);
-        });
+            // Compute ring geometry
+            const radius = ringEl.r.baseVal.value;
+            const circumference = 2 * Math.PI * radius;
+            const targetOffset = circumference - (TARGET_PERCENT / 100) * circumference;
+
+            // Park the ring at "empty" without animating into it
+            ringEl.style.transition = 'none';
+            ringEl.style.strokeDasharray = `${circumference} ${circumference}`;
+            ringEl.style.strokeDashoffset = circumference;
+
+            // Force reflow so the empty state is committed before we
+            // re-enable the transition. Without this, the browser may
+            // batch both writes and skip straight to the target value
+            // — or worse, animate from a stale value (the bug we saw
+            // on replay where the ring appeared to drain backwards).
+            void ringEl.getBoundingClientRect();
+
+            requestAnimationFrame(() => {
+                // Restore the CSS-defined transition and animate to 20%
+                ringEl.style.transition = '';
+                ringEl.style.strokeDashoffset = targetOffset;
+
+                // Cards cascade in slightly after the ring starts moving
+                setTimeout(() => stackEl.classList.add('is-in'), RING_LEAD_MS);
+
+                // Once all cards finished sliding in, switch to fast
+                // hover-friendly transitions so interactivity feels snappy.
+                const settledAt = RING_LEAD_MS + (STEP_COUNT - 1) * STAGGER_MS + ENTRANCE_DURATION;
+                setTimeout(() => stackEl.classList.add('is-settled'), settledAt);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', playActivation);
+
+        // The floating Replay pill checks for this hook before falling
+        // back to a full page reload.
+        window.__hfReplay = playActivation;
     </script>
 </body>
 

@@ -150,6 +150,9 @@
     gap: 16px;
 }
 
+/* ── Step card entrance: smooth slide-up + fade-in ──────────────
+   Cards start parked below the viewport edge, fully transparent,
+   and slide into place with a staggered delay so they cascade in. */
 .ac-step-card {
     display: flex;
     background: rgba(255, 255, 255, 0.03);
@@ -157,10 +160,41 @@
     border-radius: 20px;
     padding: 16px;
     backdrop-filter: blur(12px);
-    transition: transform 0.2s, background 0.2s;
     cursor: pointer;
     position: relative;
     overflow: hidden;
+
+    /* Entrance prep — invisible & pushed down by default */
+    opacity: 0;
+    transform: translateY(48px);
+    /* Default transition (used until is-settled) — long curve for the entrance */
+    transition:
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        background 0.2s ease;
+}
+
+/* Entrance trigger: stack adds .is-in to play the cascade */
+.ac-steps-stack.is-in .ac-step-card {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger via nth-child so we don't need inline styles */
+.ac-steps-stack.is-in .ac-step-card:nth-child(1) { transition-delay: 0ms,   0ms,   0s; }
+.ac-steps-stack.is-in .ac-step-card:nth-child(2) { transition-delay: 90ms,  90ms,  0s; }
+.ac-steps-stack.is-in .ac-step-card:nth-child(3) { transition-delay: 180ms, 180ms, 0s; }
+.ac-steps-stack.is-in .ac-step-card:nth-child(4) { transition-delay: 270ms, 270ms, 0s; }
+.ac-steps-stack.is-in .ac-step-card:nth-child(5) { transition-delay: 360ms, 360ms, 0s; }
+
+/* After the cascade is done, swap to short hover-friendly transitions
+   so the lift on hover snaps responsively instead of dragging the long
+   entrance curve. */
+.ac-steps-stack.is-settled .ac-step-card {
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+    transition-delay: 0s;
 }
 
 .ac-step-card.active {

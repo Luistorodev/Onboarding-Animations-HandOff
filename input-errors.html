@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Input Errors handling</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+    <link rel="stylesheet" href="css/input-errors.css">
+</head>
+
+<body>
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base"></div>
+            <div class="app-bg-gradient"></div>
+
+            <div class="app-container">
+                <div class="ie-app">
+                    <!-- Status Bar -->
+                    <div class="status-bar light">
+                        <span class="time">9:41</span>
+                        <div class="status-icons">
+                            <i class="ph-fill ph-cell-signal-full"></i>
+                            <i class="ph-fill ph-wifi-high"></i>
+                            <i class="ph-fill ph-battery-full"></i>
+                        </div>
+                    </div>
+
+                    <!-- Header -->
+                    <div class="ie-header">
+                        <div class="ie-eyebrow">Validation</div>
+                        <h1 class="ie-title">Account details</h1>
+                        <p class="ie-sub">
+                            Each field validates when you tap outside it. Try leaving a field empty
+                            or with bad input to trigger the error state.
+                        </p>
+                    </div>
+
+                    <!-- Form -->
+                    <form class="ie-form" id="ieForm" autocomplete="off" novalidate>
+
+                        <!-- Email -->
+                        <div class="ie-field" data-field="email" data-rule="email">
+                            <label class="ie-label" for="ie-email">
+                                <span>Email</span>
+                            </label>
+                            <div class="ie-input-wrap">
+                                <input
+                                    class="ie-input"
+                                    id="ie-email"
+                                    type="email"
+                                    inputmode="email"
+                                    placeholder="name@company.com"
+                                    autocapitalize="off"
+                                    spellcheck="false">
+                                <span class="ie-status-icon error" aria-hidden="true">
+                                    <i class="ph-bold ph-x"></i>
+                                </span>
+                                <span class="ie-status-icon success" aria-hidden="true">
+                                    <i class="ph-bold ph-check"></i>
+                                </span>
+                            </div>
+                            <div class="ie-msg" data-msg>
+                                <span data-msg-text>We'll use this to send you confirmations.</span>
+                            </div>
+                        </div>
+
+                        <!-- Full name -->
+                        <div class="ie-field" data-field="fullname" data-rule="fullname">
+                            <label class="ie-label" for="ie-fullname">
+                                <span>Full name</span>
+                                <span class="ie-label-hint">First and last</span>
+                            </label>
+                            <div class="ie-input-wrap">
+                                <input
+                                    class="ie-input"
+                                    id="ie-fullname"
+                                    type="text"
+                                    placeholder="Ana Smith">
+                                <span class="ie-status-icon error" aria-hidden="true">
+                                    <i class="ph-bold ph-x"></i>
+                                </span>
+                                <span class="ie-status-icon success" aria-hidden="true">
+                                    <i class="ph-bold ph-check"></i>
+                                </span>
+                            </div>
+                            <div class="ie-msg" data-msg>
+                                <span data-msg-text>As it appears on your government ID.</span>
+                            </div>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="ie-field" data-field="phone" data-rule="phone">
+                            <label class="ie-label" for="ie-phone">
+                                <span>Phone number</span>
+                            </label>
+                            <div class="ie-input-wrap">
+                                <input
+                                    class="ie-input"
+                                    id="ie-phone"
+                                    type="tel"
+                                    inputmode="tel"
+                                    placeholder="+1 (555) 000-0000">
+                                <span class="ie-status-icon error" aria-hidden="true">
+                                    <i class="ph-bold ph-x"></i>
+                                </span>
+                                <span class="ie-status-icon success" aria-hidden="true">
+                                    <i class="ph-bold ph-check"></i>
+                                </span>
+                            </div>
+                            <div class="ie-msg" data-msg>
+                                <span data-msg-text>Include country code, digits only.</span>
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="ie-field" data-field="password" data-rule="password">
+                            <label class="ie-label" for="ie-password">
+                                <span>Password</span>
+                                <span class="ie-label-hint">Min 8 characters</span>
+                            </label>
+                            <div class="ie-input-wrap">
+                                <input
+                                    class="ie-input"
+                                    id="ie-password"
+                                    type="password"
+                                    placeholder="••••••••">
+                                <span class="ie-status-icon error" aria-hidden="true">
+                                    <i class="ph-bold ph-x"></i>
+                                </span>
+                                <span class="ie-status-icon success" aria-hidden="true">
+                                    <i class="ph-bold ph-check"></i>
+                                </span>
+                            </div>
+                            <div class="ie-msg" data-msg>
+                                <span data-msg-text>Mix letters, numbers and a symbol.</span>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <!-- CTA -->
+                    <div class="ie-cta-wrap">
+                        <button class="ie-cta" id="ieCta" type="button" disabled>Continue</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Input Errors handling</h3>
+            <p>
+                Validación on-blur. El campo entra en estado de error con borde rojo,
+                un shake sutil y un mensaje específico. Vuelve a normal en el momento
+                en que el usuario edita el campo.
+            </p>
+        </div>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        // ── Field validators ──────────────────────────────
+        const validators = {
+            email: (v) => {
+                if (!v.trim()) return { ok: false, msg: 'Email is required.' };
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+                if (!re.test(v.trim())) return { ok: false, msg: 'Enter a valid email address.' };
+                return { ok: true, msg: 'Looks good.' };
+            },
+            fullname: (v) => {
+                const t = v.trim();
+                if (!t) return { ok: false, msg: 'Full name is required.' };
+                if (t.length < 3) return { ok: false, msg: 'Name is too short.' };
+                if (!/\s/.test(t)) return { ok: false, msg: 'Add your last name too.' };
+                return { ok: true, msg: 'Got it.' };
+            },
+            phone: (v) => {
+                const t = v.trim();
+                if (!t) return { ok: false, msg: 'Phone number is required.' };
+                const digits = t.replace(/\D/g, '');
+                if (digits.length < 8) return { ok: false, msg: 'Phone number is too short.' };
+                if (digits.length > 15) return { ok: false, msg: 'Phone number is too long.' };
+                return { ok: true, msg: 'Number looks valid.' };
+            },
+            password: (v) => {
+                if (!v) return { ok: false, msg: 'Password is required.' };
+                if (v.length < 8) return { ok: false, msg: 'Use at least 8 characters.' };
+                if (!/[A-Za-z]/.test(v) || !/\d/.test(v)) {
+                    return { ok: false, msg: 'Mix letters and numbers.' };
+                }
+                return { ok: true, msg: 'Strong password.' };
+            }
+        };
+
+        // ── Field state cache (to enable/disable CTA) ─────
+        const fieldStates = {};
+
+        // ── Wire up every field ───────────────────────────
+        const form = document.getElementById('ieForm');
+        const cta = document.getElementById('ieCta');
+        const fields = Array.from(form.querySelectorAll('.ie-field'));
+
+        fields.forEach((field) => {
+            const rule = field.dataset.rule;
+            const name = field.dataset.field;
+            const wrap = field.querySelector('.ie-input-wrap');
+            const input = field.querySelector('.ie-input');
+            const msg = field.querySelector('[data-msg]');
+            const msgText = field.querySelector('[data-msg-text]');
+            const helperDefault = msgText.textContent;
+
+            // Track whether the user has interacted (blurred at least once),
+            // so we don't flash errors before the user has had a chance to
+            // type. This mirrors a "validate on blur, then on change" pattern.
+            let touched = false;
+
+            input.addEventListener('focus', () => {
+                wrap.classList.add('is-focused');
+            });
+
+            input.addEventListener('blur', () => {
+                wrap.classList.remove('is-focused');
+                touched = true;
+                runValidation();
+            });
+
+            input.addEventListener('input', () => {
+                // Once the user starts typing again, immediately drop the
+                // error state — it'll be re-evaluated on the next blur.
+                if (wrap.classList.contains('is-error')) {
+                    wrap.classList.remove('is-error');
+                    msg.classList.remove('is-error', 'is-visible');
+                    msgText.textContent = helperDefault;
+                }
+                // If they had a success state, only re-evaluate live to keep
+                // the UX honest (still on blur for errors though).
+                if (touched && wrap.classList.contains('is-success')) {
+                    const result = validators[rule](input.value);
+                    fieldStates[name] = result.ok;
+                    if (!result.ok) {
+                        wrap.classList.remove('is-success');
+                        msg.classList.remove('is-success');
+                    }
+                    refreshCta();
+                }
+            });
+
+            function runValidation() {
+                const result = validators[rule](input.value);
+                fieldStates[name] = result.ok;
+
+                wrap.classList.remove('is-error', 'is-success');
+                msg.classList.remove('is-error', 'is-success', 'is-visible');
+
+                // Force reflow so the shake animation re-fires on consecutive errors
+                void wrap.offsetWidth;
+
+                if (result.ok) {
+                    wrap.classList.add('is-success');
+                    msg.classList.add('is-success', 'is-visible');
+                } else {
+                    wrap.classList.add('is-error');
+                    msg.classList.add('is-error', 'is-visible');
+                }
+                msgText.textContent = result.msg;
+
+                refreshCta();
+            }
+        });
+
+        function refreshCta() {
+            const allValid = fields.every((f) => fieldStates[f.dataset.field] === true);
+            cta.disabled = !allValid;
+        }
+
+        cta.addEventListener('click', () => {
+            if (cta.disabled) return;
+            // Demo: brief success pulse
+            cta.textContent = 'All set!';
+            cta.style.background = 'var(--green-success, #6ed085)';
+            cta.style.boxShadow = '0 12px 28px rgba(110, 208, 133, 0.35)';
+            setTimeout(() => {
+                cta.textContent = 'Continue';
+                cta.style.background = '';
+                cta.style.boxShadow = '';
+            }, 1400);
+        });
+
+        // ── Replay (used by the floating Replay pill) ─────
+        window.__hfReplay = function () {
+            fields.forEach((field) => {
+                const wrap = field.querySelector('.ie-input-wrap');
+                const input = field.querySelector('.ie-input');
+                const msg = field.querySelector('[data-msg]');
+                const msgText = field.querySelector('[data-msg-text]');
+                input.value = '';
+                input.blur();
+                wrap.classList.remove('is-error', 'is-success', 'is-focused');
+                msg.classList.remove('is-error', 'is-success', 'is-visible');
+                // restore default helper text
+                const defaults = {
+                    email:    "We'll use this to send you confirmations.",
+                    fullname: 'As it appears on your government ID.',
+                    phone:    'Include country code, digits only.',
+                    password: 'Mix letters, numbers and a symbol.'
+                };
+                msgText.textContent = defaults[field.dataset.field] || '';
+                fieldStates[field.dataset.field] = false;
+            });
+            refreshCta();
+
+            // Auto-demo: type something invalid, then blur, after a beat
+            setTimeout(() => {
+                const email = document.getElementById('ie-email');
+                email.focus();
+                email.value = 'not-an-email';
+                setTimeout(() => email.blur(), 900);
+            }, 600);
+        };
+
+        // Auto-demo on first load so reviewers see the error state immediately
+        setTimeout(() => {
+            const email = document.getElementById('ie-email');
+            if (!email.value) {
+                email.focus();
+                email.value = 'not-an-email';
+                setTimeout(() => email.blur(), 900);
+            }
+        }, 700);
+    </script>
+</body>
+
+</html>
