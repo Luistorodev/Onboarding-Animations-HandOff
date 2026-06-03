@@ -257,6 +257,33 @@
         <span>Replay</span>
     </button>
 
+    <!-- ── Download JSONs ─────────────────────────────────────────
+         Individual download buttons for each Lottie animation file.
+         Devs can grab each JSON independently from the handoff.
+         Files live in: new-assets/Screen[1-3].json
+         ──────────────────────────────────────────────────────── -->
+    <div class="hf-download-group" role="group" aria-label="Download Lottie animations">
+        <span class="hf-download-group-label">
+            <i class="ph ph-file-json"></i>
+            Lottie JSON files
+        </span>
+        <a href="new-assets/Screen1.json" download="ValueProp-Screen1.json" class="hf-download-pill hf-download-json" aria-label="Download Screen 1 JSON">
+            <i class="ph ph-download-simple"></i>
+            <span>Screen 1</span>
+            <span class="hf-download-ext">JSON</span>
+        </a>
+        <a href="new-assets/Screen2.json" download="ValueProp-Screen2.json" class="hf-download-pill hf-download-json" aria-label="Download Screen 2 JSON">
+            <i class="ph ph-download-simple"></i>
+            <span>Screen 2</span>
+            <span class="hf-download-ext">JSON</span>
+        </a>
+        <a href="new-assets/Screen3.json" download="ValueProp-Screen3.json" class="hf-download-pill hf-download-json" aria-label="Download Screen 3 JSON">
+            <i class="ph ph-download-simple"></i>
+            <span>Screen 3</span>
+            <span class="hf-download-ext">JSON</span>
+        </a>
+    </div>
+
     <script>
         // ── Value Prop slider controller ───────────────────────────
         const track = document.getElementById('vpTrack');

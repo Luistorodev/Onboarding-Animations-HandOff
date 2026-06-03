@@ -28,9 +28,27 @@
             <div class="app-container splash-container">
                 <!-- Video Background -->
                 <video class="splash-video" autoplay loop muted playsinline>
-                    <source src="assets/IntroVideo_v3.mp4" type="video/mp4">
+                    <source src="assets/New-Video-Final-Version.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
+
+                <!--
+                    [DEV NOTE] splash-video-overlay
+                    ─────────────────────────────────────────────────────────
+                    Purpose : Adds a uniform black tint directly on top of the
+                              background video to slightly darken it, improving
+                              contrast for the logo and CTA buttons without
+                              hiding the video content.
+
+                    Spec    : rgba(0, 0, 0, 0.20) → 20% black opacity
+                    z-index : 2  (above video @ z:1, below UI elements @ z:10+)
+                    CSS ref : .splash-video-overlay  →  css/handoff.css
+
+                    ⚠️  Do NOT increase opacity above ~0.30 or the video will
+                        lose its visual impact. Adjust in handoff.css only.
+                    ─────────────────────────────────────────────────────────
+                -->
+                <div class="splash-video-overlay"></div>
 
                 <!-- Overlay to tint video to match Figma dark mode and ensure text legibility -->
                 <div class="splash-overlay"></div>
@@ -55,12 +73,67 @@
                 </div>
             </div>
         </div>
+
+        <!-- ═══════════════════════════════════════════════
+             FIGMA-STYLE DEV ANNOTATION — Video Overlay
+             Visible in handoff view only, not in production
+             ═══════════════════════════════════════════════ -->
+        <div class="dev-annotation" id="overlayAnnotation">
+            <!-- Connector line (SVG) pointing left toward the device -->
+            <svg class="dev-annotation-line" viewBox="0 0 80 2" preserveAspectRatio="none">
+                <line x1="0" y1="1" x2="80" y2="1" stroke="rgba(122,80,247,0.6)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            </svg>
+            <!-- Dot on the device edge -->
+            <div class="dev-annotation-dot"></div>
+            <!-- Card body -->
+            <div class="dev-annotation-card">
+                <div class="dev-ann-header">
+                    <span class="dev-ann-badge">1</span>
+                    <span class="dev-ann-title">Video Overlay</span>
+                    <span class="dev-ann-tag">Layer</span>
+                </div>
+                <div class="dev-ann-rows">
+                    <div class="dev-ann-row">
+                        <span class="dev-ann-label">Element</span>
+                        <code class="dev-ann-value">.splash-video-overlay</code>
+                    </div>
+                    <div class="dev-ann-row">
+                        <span class="dev-ann-label">Color</span>
+                        <div class="dev-ann-color-wrap">
+                            <span class="dev-ann-swatch"></span>
+                            <code class="dev-ann-value">rgba(0,0,0, 0.20)</code>
+                        </div>
+                    </div>
+                    <div class="dev-ann-row">
+                        <span class="dev-ann-label">Opacity</span>
+                        <code class="dev-ann-value">20%</code>
+                    </div>
+                    <div class="dev-ann-row">
+                        <span class="dev-ann-label">z-index</span>
+                        <code class="dev-ann-value">2 &nbsp;(video:1 → overlay:2 → ui:10+)</code>
+                    </div>
+                    <div class="dev-ann-row">
+                        <span class="dev-ann-label">CSS</span>
+                        <code class="dev-ann-value">css/handoff.css</code>
+                    </div>
+                </div>
+                <div class="dev-ann-warn">
+                    <i class="ph ph-warning"></i>
+                    Max opacity ~0.30 — keep video visible
+                </div>
+            </div>
+        </div>
     </div>
 
     <button class="hf-replay-pill" id="replayBtn" aria-label="Replay splash">
         <i class="ph ph-arrow-clockwise"></i>
         <span>Replay</span>
     </button>
+
+    <a href="assets/New-Video-Final-Version.mp4" download="New-Video-Final-Version.mp4" class="hf-download-pill" aria-label="Download video">
+        <i class="ph ph-download-simple"></i>
+        <span>Download Video</span>
+    </a>
 
     <script>
         // Replay logic: re-mount the video + reset CSS animations

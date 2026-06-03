@@ -8,32 +8,127 @@
 
     <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/handoff.css">
 
     <style>
-        /* ── Auto hand-off to the home screen ──────────────────────
-           Five seconds after the verified animation finishes, the
-           whole stage gently scales back and fades out while the
-           real dashboard slides up from the bottom (inside an iframe
-           so we can reuse the production home screen as-is). */
-
+        /* ── Theme transitions & overrides ────────────────────────────── */
         #verifiedApp {
             position: relative;
             overflow: hidden;
+            transition: background-color 0.4s ease;
         }
 
-        #verifiedStage {
-            transition:
-                opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        /* Light Theme */
+        #verifiedApp.theme-light {
+            background-color: #F8F9FB; /* Light background */
+        }
+        #verifiedApp.theme-light .status-bar {
+            color: #0A0717; /* Dark status bar */
+        }
+        #verifiedApp.theme-light .verified-text h3 {
+            color: #0A0717;
+        }
+        #verifiedApp.theme-light .verified-text p {
+            color: #4F4D5A;
         }
 
-        #verifiedApp.is-handing-off #verifiedStage {
+        /* Dark Theme */
+        #verifiedApp.theme-dark {
+            background-color: #0A0717; /* Dark background */
+        }
+        #verifiedApp.theme-dark .status-bar {
+            color: #FFFFFF;
+        }
+
+        /* Overlay Theme (simulates a dark overlay over the app) */
+        #verifiedApp.theme-overlay {
+            background-color: transparent;
+        }
+        #verifiedApp.theme-overlay .status-bar {
+            color: #FFFFFF;
+        }
+        #verifiedApp.theme-overlay .verified-stage-bg {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 7, 23, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 1;
+        }
+
+        .verified-stage-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 0 24px;
+            gap: 32px; /* Increased gap */
+        }
+
+        .verified-lottie {
+            width: 140px;
+            height: 140px;
+        }
+
+        .verified-text {
+            text-align: center;
             opacity: 0;
-            transform: scale(0.94);
+            transform: translateY(12px);
+            animation: textIn 0.5s ease 0.4s forwards;
         }
 
+        .verified-text h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+            color: #FFFFFF; /* Default dark/overlay text */
+        }
+
+        .verified-text p {
+            font-size: 14px;
+            color: rgba(235, 235, 245, 0.7); /* Default */
+            max-width: 260px;
+            line-height: 1.5;
+            margin: 0 auto;
+        }
+
+        @keyframes textIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Bottom Bubble (Light & Dark only) ────────────────────────── */
+        .success-bubble {
+            position: absolute;
+            bottom: -60px; /* Hidden initially or scaled */
+            left: 50%;
+            transform: translateX(-50%) scale(1);
+            width: 300px;
+            height: 180px;
+            background: radial-gradient(circle, rgba(122,80,247,0.3) 0%, rgba(122,80,247,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 0;
+        }
+
+        #verifiedApp.theme-light .success-bubble,
+        #verifiedApp.theme-dark .success-bubble {
+            opacity: 0.8;
+            animation: breathingBubble 4s ease-in-out infinite alternate 0.5s;
+        }
+
+        @keyframes breathingBubble {
+            0%   { transform: translateX(-50%) scale(1); opacity: 0.8; }
+            100% { transform: translateX(-50%) scale(1.15); opacity: 1; }
+        }
+
+        /* ── Auto hand-off elements ──────────────────────────────────── */
         .verified-home-shell {
             position: absolute;
             inset: 0;
@@ -41,36 +136,34 @@
             overflow: hidden;
             opacity: 0;
             transform: translateY(100%);
-            transition:
-                opacity 0.55s ease,
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: opacity 0.55s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
             pointer-events: none;
             z-index: 5;
         }
-
         #verifiedApp.is-handing-off .verified-home-shell {
             opacity: 1;
             transform: translateY(0);
             pointer-events: auto;
         }
-
-        /* The iframe loads the full dashboard page (which includes its
-           own device frame). We blow it up so the inner phone screen
-           perfectly fills the verified frame, and clip the surrounding
-           page chrome by hiding overflow on the shell. */
         .verified-home-shell iframe {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 800px;        /* enough to give the dashboard breathing room */
+            width: 800px;
             height: 1240px;
             border: 0;
             background: transparent;
             pointer-events: auto;
         }
-
-        /* Subtle hint that this is an automated transition */
+        #verifiedStage {
+            transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+            height: 100%;
+        }
+        #verifiedApp.is-handing-off #verifiedStage {
+            opacity: 0;
+            transform: scale(0.94);
+        }
         .verified-handoff-pill {
             position: absolute;
             top: 16px;
@@ -95,26 +188,66 @@
             z-index: 10;
             pointer-events: none;
         }
-
         .verified-handoff-pill.is-visible {
             opacity: 1;
             transform: translate(-50%, 0);
         }
-
         .verified-handoff-pill i {
             font-size: 13px;
+        }
+        
+        /* Demo Tabs Control */
+        .hf-tabs {
+            position: absolute;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 99px;
+            padding: 4px;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+        .hf-tab {
+            padding: 8px 16px;
+            color: rgba(255,255,255,0.6);
+            font-family: 'General Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .hf-tab:hover {
+            color: rgba(255,255,255,0.9);
+        }
+        .hf-tab.is-active {
+            background: rgba(122, 80, 247, 0.4);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 
 <body>
+    <!-- Theme Tabs -->
+    <div class="hf-tabs">
+        <div class="hf-tab" data-theme="theme-light">Light</div>
+        <div class="hf-tab" data-theme="theme-dark">Dark</div>
+        <div class="hf-tab is-active" data-theme="theme-overlay">Overlay</div>
+    </div>
+
     <div class="hf-demo-shell">
         <div class="device-frame">
             <div class="app-bg-base"></div>
             <div class="app-bg-gradient"></div>
 
-            <div class="app-container" id="verifiedApp">
-                <div class="status-bar light">
+            <!-- Start with overlay theme to match existing behavior initially -->
+            <div class="app-container theme-overlay" id="verifiedApp">
+                <div class="status-bar light" id="statusBar">
                     <span class="time">9:41</span>
                     <div class="status-icons">
                         <i class="ph-fill ph-cell-signal-full"></i>
@@ -124,14 +257,24 @@
                 </div>
 
                 <div class="verified-stage" id="verifiedStage">
-                    <div class="verified-circle">
-                        <div class="verified-shield">
-                            <i class="ph-fill ph-shield-check"></i>
+                    <div class="verified-stage-bg" id="stageBg"></div>
+                    <div class="success-bubble"></div>
+                    
+                    <div class="verified-stage-content">
+                        <!-- New Success Lottie -->
+                        <lottie-player
+                            id="successLottie"
+                            class="verified-lottie"
+                            src="assets/new-succes-lottie.json"
+                            background="transparent"
+                            speed="1"
+                            autoplay>
+                        </lottie-player>
+                        
+                        <div class="verified-text">
+                            <h3>Identity verified</h3>
+                            <p>Your account is ready to use worldwide. You can now access all features.</p>
                         </div>
-                    </div>
-                    <div class="verified-text">
-                        <h3>Identity verified</h3>
-                        <p>You're all set. Your account is ready to go global.</p>
                     </div>
                 </div>
 
@@ -153,33 +296,79 @@
         </div>
 
         <div class="hf-demo-label">
-            <h3>Verified</h3>
+            <h3>Verified / Success</h3>
             <p>
-                Pop-in del shield + anillos pulsantes y reveal del título cuando se confirma
-                identidad. Tras 5 segundos, transición automática al home de la app.
+                Tres versiones (Light, Dark, Overlay) del estado de éxito. Lottie check + breathing bubble. Tras 5 segundos, transición automática al home de la app.
             </p>
         </div>
     </div>
 
+    <!-- ── Download animation files ──────────────────────────────────── -->
+    <div class="hf-download-group" role="group" aria-label="Download animation files">
+        <span class="hf-download-group-label">
+            <i class="ph ph-sparkle"></i>
+            Verified Animation
+        </span>
+        <a href="assets/new-succes-lottie.json" download="new-succes-lottie.json" class="hf-download-pill hf-download-json" aria-label="Download Lottie animation">
+            <i class="ph ph-download-simple"></i>
+            <span>Success Lottie</span>
+            <span class="hf-download-ext">JSON</span>
+        </a>
+        <a href="new-assets/verified-animation.css" download="verified-animation.css" class="hf-download-pill hf-download-json" aria-label="Download CSS animation source">
+            <i class="ph ph-download-simple"></i>
+            <span>Legacy CSS</span>
+            <span class="hf-download-ext">CSS</span>
+        </a>
+        <a href="new-assets/verified-animation-spec.json" download="verified-animation-spec.json" class="hf-download-pill hf-download-json" aria-label="Download animation spec JSON">
+            <i class="ph ph-download-simple"></i>
+            <span>Legacy Spec</span>
+            <span class="hf-download-ext">JSON</span>
+        </a>
+    </div>
+
     <script src="js/handoff-controls.js"></script>
     <script>
-        // ── Verified → Home auto hand-off ─────────────────────────
-        // The verified-text reveal finishes around ~1.5s in. We wait
-        // 5s from page load (per the brief) and then slide the home
-        // screen up from the bottom while the verified stage fades.
-        const HANDOFF_DELAY_MS = 5000;
-
+        // ── Tabs logic ────────────────────────────────────────────────
+        const tabs = document.querySelectorAll('.hf-tab');
         const appEl = document.getElementById('verifiedApp');
+        const statusBar = document.getElementById('statusBar');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab styling
+                tabs.forEach(t => t.classList.remove('is-active'));
+                tab.classList.add('is-active');
+
+                // Switch theme class
+                const newTheme = tab.getAttribute('data-theme');
+                appEl.className = `app-container ${newTheme}`; // this wipes is-handing-off, which is intended during theme switch
+
+                // Adjust status bar (light for dark/overlay, dark for light)
+                if (newTheme === 'theme-light') {
+                    statusBar.classList.remove('light');
+                    statusBar.classList.add('dark'); // assuming 'dark' sets color to #000 in your css or our internal styles
+                } else {
+                    statusBar.classList.add('light');
+                    statusBar.classList.remove('dark');
+                }
+
+                // Auto replay on tab switch
+                window.__hfReplay();
+            });
+        });
+
+        // ── Verified → Home auto hand-off ─────────────────────────
+        const HANDOFF_DELAY_MS = 5000;
         const stageEl = document.getElementById('verifiedStage');
         const shellEl = document.getElementById('verifiedHomeShell');
         const pillEl = document.getElementById('verifiedHandoffPill');
         const iframeEl = shellEl.querySelector('iframe');
+        const lottiePlayer = document.getElementById('successLottie');
 
         let handoffTimer = null;
 
         function startHandoffCountdown() {
             clearTimeout(handoffTimer);
-            // Reveal the helper pill a beat after the verified text settles
             setTimeout(() => pillEl.classList.add('is-visible'), 1800);
             handoffTimer = setTimeout(() => {
                 appEl.classList.add('is-handing-off');
@@ -187,30 +376,33 @@
             }, HANDOFF_DELAY_MS);
         }
 
-        startHandoffCountdown();
+        // Wait for lottie player to be ready then start
+        if (lottiePlayer) {
+            lottiePlayer.addEventListener('ready', () => {
+                startHandoffCountdown();
+            });
+        }
 
-        // Replay handler — restart all CSS animations without reloading
-        // the page, then re-run the hand-off countdown.
         window.__hfReplay = function () {
-            // Cancel any pending auto hand-off
             clearTimeout(handoffTimer);
-            // Reset hand-off layers
             appEl.classList.remove('is-handing-off');
             pillEl.classList.remove('is-visible');
-            // Force the iframe to reload so the home transition feels
-            // fresh on every replay. Reassigning .src is the cleanest
-            // cross-browser way to do this.
             iframeEl.src = 'about:blank';
             requestAnimationFrame(() => {
                 iframeEl.src = 'dashboard.html';
             });
-            // Restart the verified-stage CSS animations by cloning the
-            // node — same trick as before, but we re-grab the new ref.
-            const fresh = stageEl.cloneNode(true);
-            stageEl.replaceWith(fresh);
-            // Update closure reference to the new element
-            window.__verifiedStageRef = fresh;
-            // Kick the countdown again
+            
+            // Re-trigger CSS animations
+            const newStage = stageEl.cloneNode(true);
+            stageEl.replaceWith(newStage);
+            
+            // Note: need to re-bind elements since we replaced the stage
+            const newLottie = newStage.querySelector('lottie-player');
+            if (newLottie) {
+                newLottie.seek(0);
+                newLottie.play();
+            }
+            
             startHandoffCountdown();
         };
     </script>

@@ -1,0 +1,181 @@
+/*
+ * ═══════════════════════════════════════════════════════════
+ *  Ontop — Verified Animation  |  CSS Source
+ *  Version   : 1.0.0
+ *  Author    : Ontop Design System
+ *  Exported  : Onboarding Animations HandOff
+ * ═══════════════════════════════════════════════════════════
+ *
+ *  HOW TO USE
+ *  ──────────
+ *  1. Import or paste this file into your project CSS.
+ *  2. Copy the HTML structure below into your template.
+ *  3. Add class "is-replay" to .verified-stage to restart
+ *     the animation (remove it first, then re-add it with a
+ *     tiny setTimeout to force a reflow).
+ *
+ *  REQUIRED HTML STRUCTURE
+ *  ───────────────────────
+ *  <div class="verified-stage">
+ *    <div class="verified-circle">
+ *      <div class="verified-shield">
+ *        <!-- your shield icon here, e.g. Phosphor ph-shield-check -->
+ *        <i class="ph-fill ph-shield-check"></i>
+ *      </div>
+ *    </div>
+ *    <div class="verified-text">
+ *      <h3>Identity verified</h3>
+ *      <p>You're all set. Your account is ready to go global.</p>
+ *    </div>
+ *  </div>
+ *
+ *  ANIMATION TIMELINE
+ *  ──────────────────
+ *  0.00s  Page ready
+ *  0.20s  Circle pop-in starts       (verifiedPop, 0.7s)
+ *  0.55s  Shield icon reveal starts  (verifiedShield, 0.55s)
+ *  0.60s  Inner ring pulse starts    (verifiedRing, 1.6s ∞)
+ *  1.00s  Outer ring pulse starts    (verifiedRing, 1.6s ∞, +0.4s offset)
+ *  1.00s  Text fade-up starts        (verifiedTextIn, 0.5s)
+ *  1.50s  All animations settled
+ *
+ *  DESIGN TOKENS USED
+ *  ──────────────────
+ *  --purple-primary : #7a50f7
+ *  --purple-dark    : #4422a8
+ *  Easing (spring)  : cubic-bezier(0.175, 0.885, 0.32, 1.275)
+ *  Easing (ease-out): ease-out
+ *
+ * ═══════════════════════════════════════════════════════════
+ */
+
+
+/* ── Layout container ──────────────────────────────────────── */
+.verified-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 24px;
+    gap: 22px;
+}
+
+
+/* ── Circle ────────────────────────────────────────────────── */
+.verified-circle {
+    position: relative;
+    width: 132px;
+    height: 132px;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(122, 80, 247, 0.5), transparent 65%),
+        linear-gradient(135deg, #7a50f7 0%, #4422a8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 24px 48px rgba(122, 80, 247, 0.4);
+
+    /* Initial state — popped in by animation */
+    transform: scale(0);
+    animation: verifiedPop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s forwards;
+}
+
+/* Inner pulsing ring */
+.verified-circle::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    opacity: 0;
+    animation: verifiedRing 1.6s ease-out 0.6s infinite;
+}
+
+/* Outer pulsing ring */
+.verified-circle::after {
+    content: '';
+    position: absolute;
+    inset: -14px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    opacity: 0;
+    animation: verifiedRing 1.6s ease-out 1.0s infinite;
+}
+
+
+/* ── Shield icon ───────────────────────────────────────────── */
+.verified-shield {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    color: white;
+    font-size: 64px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Initial state */
+    opacity: 0;
+    transform: scale(0.5) rotate(-25deg);
+    animation: verifiedShield 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.55s forwards;
+}
+
+
+/* ── Text block ─────────────────────────────────────────────── */
+.verified-text {
+    text-align: center;
+
+    /* Initial state */
+    opacity: 0;
+    transform: translateY(8px);
+    animation: verifiedTextIn 0.5s ease 1s forwards;
+}
+
+.verified-text h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+}
+
+.verified-text p {
+    font-size: 13px;
+    color: rgba(235, 235, 245, 0.6);
+    max-width: 240px;
+    line-height: 1.5;
+    margin: 0 auto;
+}
+
+
+/* ── Keyframes ──────────────────────────────────────────────── */
+
+/* Circle bouncy pop-in */
+@keyframes verifiedPop {
+    0%   { transform: scale(0); }
+    70%  { transform: scale(1.08); }
+    100% { transform: scale(1); }
+}
+
+/* Shield icon reveal with spring + rotation */
+@keyframes verifiedShield {
+    0%   { opacity: 0; transform: scale(0.5) rotate(-25deg); }
+    70%  { opacity: 1; transform: scale(1.12) rotate(0deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Pulsing concentric rings (infinite) */
+@keyframes verifiedRing {
+    0%   { transform: scale(0.85); opacity: 0.7; }
+    100% { transform: scale(1.6);  opacity: 0; }
+}
+
+/* Text slide-up + fade-in */
+@keyframes verifiedTextIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

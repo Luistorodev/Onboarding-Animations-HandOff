@@ -1,0 +1,143 @@
+{
+  "_meta": {
+    "name": "Verified Animation",
+    "description": "Identity verification success state. Purple circle pops in with a shield icon and pulsing rings, followed by a text reveal.",
+    "version": "1.0.0",
+    "type": "css-keyframe-animation",
+    "duration_ms": 1500,
+    "source_file": "css/handoff.css",
+    "html_file": "verified.html",
+    "note": "This animation is implemented in CSS. Use the companion verified-animation.css for direct web use. This JSON spec is intended for native re-implementation (iOS/Android/React Native)."
+  },
+  "design_tokens": {
+    "color_circle_bg_gradient_start": "rgba(122, 80, 247, 0.5)",
+    "color_circle_bg_gradient_end": "#4422a8",
+    "color_circle_solid": "#7a50f7",
+    "color_circle_shadow": "rgba(122, 80, 247, 0.4)",
+    "color_ring_inner": "rgba(255, 255, 255, 0.4)",
+    "color_ring_outer": "rgba(255, 255, 255, 0.18)",
+    "color_shield_icon": "#ffffff",
+    "color_title": "#ffffff",
+    "color_subtitle": "rgba(235, 235, 245, 0.6)"
+  },
+  "layout": {
+    "container": {
+      "display": "flex",
+      "flex_direction": "column",
+      "align_items": "center",
+      "justify_content": "center",
+      "gap_px": 22
+    },
+    "circle": {
+      "width_px": 132,
+      "height_px": 132,
+      "border_radius": "50%",
+      "box_shadow": "0 24px 48px rgba(122, 80, 247, 0.4)"
+    },
+    "shield_icon": {
+      "width_px": 64,
+      "height_px": 64,
+      "font_size_px": 64,
+      "icon_library": "Phosphor Icons",
+      "icon_name": "ph-fill ph-shield-check"
+    },
+    "ring_inner": {
+      "inset_px": -6,
+      "border_width_px": 2,
+      "border_radius": "50%"
+    },
+    "ring_outer": {
+      "inset_px": -14,
+      "border_width_px": 1,
+      "border_radius": "50%"
+    },
+    "title": {
+      "font_size_px": 22,
+      "font_weight": 600,
+      "letter_spacing_px": -0.2,
+      "margin_bottom_px": 6
+    },
+    "subtitle": {
+      "font_size_px": 13,
+      "max_width_px": 240,
+      "line_height": 1.5
+    }
+  },
+  "animations": {
+    "circle_pop": {
+      "css_name": "verifiedPop",
+      "target": ".verified-circle",
+      "property": "transform (scale)",
+      "delay_ms": 200,
+      "duration_ms": 700,
+      "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+      "easing_label": "spring overshoot",
+      "fill": "forwards",
+      "keyframes": [
+        { "progress": "0%",   "scale": 0 },
+        { "progress": "70%",  "scale": 1.08 },
+        { "progress": "100%", "scale": 1.0 }
+      ]
+    },
+    "shield_reveal": {
+      "css_name": "verifiedShield",
+      "target": ".verified-shield",
+      "initial_state": { "opacity": 0, "scale": 0.5, "rotate_deg": -25 },
+      "delay_ms": 550,
+      "duration_ms": 550,
+      "easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+      "easing_label": "spring overshoot",
+      "fill": "forwards",
+      "keyframes": [
+        { "progress": "0%",   "opacity": 0, "scale": 0.5,  "rotate_deg": -25 },
+        { "progress": "70%",  "opacity": 1, "scale": 1.12, "rotate_deg": 0 },
+        { "progress": "100%", "opacity": 1, "scale": 1.0,  "rotate_deg": 0 }
+      ]
+    },
+    "ring_inner_pulse": {
+      "css_name": "verifiedRing",
+      "target": ".verified-circle::before",
+      "delay_ms": 600,
+      "duration_ms": 1600,
+      "easing": "ease-out",
+      "iteration": "infinite",
+      "keyframes": [
+        { "progress": "0%",   "scale": 0.85, "opacity": 0.7 },
+        { "progress": "100%", "scale": 1.6,  "opacity": 0 }
+      ]
+    },
+    "ring_outer_pulse": {
+      "css_name": "verifiedRing",
+      "target": ".verified-circle::after",
+      "delay_ms": 1000,
+      "duration_ms": 1600,
+      "easing": "ease-out",
+      "iteration": "infinite",
+      "note": "Same keyframes as ring_inner_pulse, offset by 400ms for staggered feel",
+      "keyframes": [
+        { "progress": "0%",   "scale": 0.85, "opacity": 0.7 },
+        { "progress": "100%", "scale": 1.6,  "opacity": 0 }
+      ]
+    },
+    "text_reveal": {
+      "css_name": "verifiedTextIn",
+      "target": ".verified-text",
+      "initial_state": { "opacity": 0, "translate_y_px": 8 },
+      "delay_ms": 1000,
+      "duration_ms": 500,
+      "easing": "ease",
+      "fill": "forwards",
+      "keyframes": [
+        { "progress": "0%",   "opacity": 0, "translate_y_px": 8 },
+        { "progress": "100%", "opacity": 1, "translate_y_px": 0 }
+      ]
+    }
+  },
+  "implementation_notes": {
+    "web": "Use new-assets/verified-animation.css — drop-in ready.",
+    "react_native": "Use react-native-reanimated withSpring / withTiming. Match cubic-bezier(0.175, 0.885, 0.32, 1.275) with damping=10, stiffness=120.",
+    "ios_swift": "Use UIViewPropertyAnimator with UISpringTimingParameters (dampingRatio: 0.6, initialVelocity: 0.5). Chain animations using addAnimations.",
+    "android": "Use ObjectAnimator or Jetpack Compose animate*AsState with spring(dampingRatio=0.6f, stiffness=300f).",
+    "lottie": "This animation is CSS-only and was not authored in After Effects. To convert to Lottie: recreate in AE using the keyframe values above, then export with Bodymovin plugin."
+  }
+}
