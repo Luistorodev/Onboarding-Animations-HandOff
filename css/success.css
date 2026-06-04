@@ -299,8 +299,8 @@ body.success-page .device-frame {
 
 /* Bottom glow — filled ellipse + soft diffused border (mask, no center hotspot) */
 .success-bubble {
-    --bubble-fill-strong: rgba(122, 80, 247, 0.58);
-    --bubble-fill-mid: rgba(122, 80, 247, 0.52);
+    --bubble-fill-strong: rgba(122, 80, 247, 0.70);
+    --bubble-fill-mid: rgba(122, 80, 247, 0.62);
     position: absolute;
     left: 50%;
     bottom: 0;
@@ -348,8 +348,8 @@ body.success-page .device-frame {
 }
 
 #successApp.theme-light .success-bubble {
-    --bubble-fill-strong: rgba(122, 80, 247, 0.52);
-    --bubble-fill-mid: rgba(122, 80, 247, 0.46);
+    --bubble-fill-strong: rgba(122, 80, 247, 0.62);
+    --bubble-fill-mid: rgba(122, 80, 247, 0.55);
     height: 155px;
     transform: translate(-50%, 42%);
     filter: blur(12px);
@@ -374,8 +374,8 @@ body.success-page .device-frame {
 }
 
 #successApp.theme-dark .success-bubble {
-    --bubble-fill-strong: rgba(122, 80, 247, 0.72);
-    --bubble-fill-mid: rgba(122, 80, 247, 0.64);
+    --bubble-fill-strong: rgba(122, 80, 247, 0.86);
+    --bubble-fill-mid: rgba(122, 80, 247, 0.77);
     height: 185px;
     transform: translate(-50%, 38%);
     filter: blur(14px);
