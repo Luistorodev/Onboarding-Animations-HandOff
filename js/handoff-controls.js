@@ -6,6 +6,9 @@
    ============================================================ */
 
 (function () {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('embed') === '1') return;
+
     function inject() {
         if (document.querySelector('.hf-back-pill')) return;
 
@@ -46,7 +49,6 @@
     }
 
     function autoTrigger() {
-        const params = new URLSearchParams(window.location.search);
         const demo = params.get('demo');
         if (!demo) return;
         // Expose to page scripts

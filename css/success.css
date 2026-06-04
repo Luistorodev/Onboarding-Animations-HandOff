@@ -1,0 +1,493 @@
+/* css/success.css — Success screen (Light / Dark / Overlay) handoff demo */
+
+/* ── Theme tabs + download (high contrast on success page) ─────── */
+body.success-page .hf-tabs {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    background: rgba(10, 7, 23, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 99px;
+    padding: 5px;
+    z-index: 10050;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(122, 80, 247, 0.15) inset;
+}
+
+body.success-page .hf-tab {
+    padding: 9px 18px;
+    color: rgba(255, 255, 255, 0.82);
+    font-family: 'General Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    user-select: none;
+}
+
+body.success-page .hf-tab:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.success-page .hf-tab.is-active {
+    background: #7a50f7;
+    color: #ffffff;
+    box-shadow:
+        0 4px 16px rgba(122, 80, 247, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.12) inset;
+}
+
+body.success-page .hf-download-group {
+    z-index: 10040;
+    padding: 10px 12px;
+    border-radius: 16px;
+    background: rgba(10, 7, 23, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+body.success-page .hf-download-group-label {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+body.success-page .hf-download-group-label i {
+    color: #b794ff;
+}
+
+body.success-page .hf-download-pill.hf-download-json {
+    background: #7a50f7;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(122, 80, 247, 0.45);
+}
+
+body.success-page .hf-download-pill.hf-download-json:hover {
+    background: #6a42e8;
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+}
+
+body.success-page .hf-download-ext {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.45);
+    color: #ffffff;
+}
+
+/* ── App shell ─────────────────────────────────────────────────── */
+#successApp {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: background-color 0.4s ease;
+    z-index: 2;
+}
+
+/* Light — Figma gray-iron-100 */
+#successApp.theme-light {
+    background-color: #fafafa;
+}
+
+#successApp.theme-light .status-bar {
+    color: #000000;
+}
+
+#successApp.theme-light .success-text h2 {
+    color: #1d2939;
+}
+
+#successApp.theme-light .success-text p {
+    color: #475467;
+}
+
+#successApp.theme-light .success-home-indicator::after {
+    background: #000000;
+}
+
+/* Dark — Figma radial gradient */
+#successApp.theme-dark {
+    background-color: #08051a;
+    background-image: radial-gradient(
+        ellipse 120% 90% at 50% -20%,
+        #21136c 0%,
+        #483c8c 18%,
+        #4c3e97 48%,
+        #331f77 61%,
+        #1b0f57 74%,
+        #110a39 87%,
+        #08051a 100%
+    );
+}
+
+#successApp.theme-dark .status-bar {
+    color: #ffffff;
+}
+
+#successApp.theme-dark .success-text h2 {
+    color: #ffffff;
+}
+
+#successApp.theme-dark .success-text p {
+    color: #eaecf0;
+}
+
+#successApp.theme-dark .success-home-indicator::after {
+    background: #000000;
+}
+
+/* Overlay — scrim over underlying flow (contained inside device frame) */
+#successApp.theme-overlay {
+    background-color: transparent;
+    pointer-events: none;
+}
+
+#successApp.theme-overlay .success-stage-content {
+    pointer-events: auto;
+}
+
+#successApp.theme-overlay .status-bar,
+#successApp.theme-overlay .success-footer,
+#successApp.theme-overlay .success-home-indicator,
+#successApp.theme-overlay .success-bubble {
+    display: none;
+}
+
+#successApp.theme-overlay .success-stage-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(16, 24, 40, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1;
+    pointer-events: none;
+}
+
+#successApp.theme-overlay .success-text h2 {
+    color: #ffffff;
+}
+
+#successApp.theme-overlay .success-text p {
+    color: #eaecf0;
+}
+
+/* Keep handoff chrome above overlay demo */
+body.success-page .hf-back-pill,
+body.success-page .hf-replay-pill {
+    z-index: 10050;
+}
+
+body.success-page .device-frame {
+    isolation: isolate;
+}
+
+/* Background iframe (overlay only) */
+.success-back-shell {
+    position: absolute;
+    inset: 12px;
+    border-radius: 32px;
+    overflow: hidden;
+    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.device-frame:has(#successApp.theme-overlay) .success-back-shell {
+    opacity: 1;
+}
+
+.success-back-shell iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 360px;
+    height: 780px;
+    border: 0;
+    pointer-events: none;
+}
+
+/* Hide default device gradients when success themes are active */
+.device-frame:has(#successApp) .app-bg-base,
+.device-frame:has(#successApp) .app-bg-gradient {
+    opacity: 0;
+}
+
+/* ── Stage layout ──────────────────────────────────────────────── */
+.success-stage {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+}
+
+.success-stage-content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    gap: 24px;
+}
+
+#successApp.theme-overlay .success-stage-content {
+    justify-content: center;
+}
+
+/* Lottie — 80px Light, 58px Dark/Overlay (Figma) */
+.success-lottie {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+#successApp.theme-dark .success-lottie,
+#successApp.theme-overlay .success-lottie {
+    width: 58px;
+    height: 58px;
+}
+
+/* Typography — Figma Heading/md + Body/md */
+.success-text {
+    text-align: center;
+    width: 100%;
+    max-width: 328px;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: successTextIn 0.5s ease 0.35s forwards;
+}
+
+.success-text h2 {
+    font-family: 'General Sans', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0;
+    margin-bottom: 12px;
+}
+
+.success-text p {
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    margin: 0 auto;
+    max-width: 280px;
+}
+
+@keyframes successTextIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Bottom glow — filled ellipse + soft diffused border (mask, no center hotspot) */
+.success-bubble {
+    --bubble-fill-strong: rgba(122, 80, 247, 0.58);
+    --bubble-fill-mid: rgba(122, 80, 247, 0.52);
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 118%;
+    max-width: 440px;
+    height: 175px;
+    transform: translate(-50%, 40%);
+    border-radius: 50% / 40%;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 0;
+    will-change: transform, opacity;
+    overflow: visible;
+    /* Solid interior; edge softness comes from mask + ::after halo */
+    background: linear-gradient(
+        to top,
+        var(--bubble-fill-strong) 0%,
+        var(--bubble-fill-mid) 55%,
+        var(--bubble-fill-mid) 100%
+    );
+    -webkit-mask-image: radial-gradient(
+        ellipse 100% 100% at 50% 100%,
+        #000 0%,
+        #000 42%,
+        rgba(0, 0, 0, 0.92) 58%,
+        rgba(0, 0, 0, 0.55) 74%,
+        rgba(0, 0, 0, 0.2) 88%,
+        transparent 100%
+    );
+    mask-image: radial-gradient(
+        ellipse 100% 100% at 50% 100%,
+        #000 0%,
+        #000 42%,
+        rgba(0, 0, 0, 0.92) 58%,
+        rgba(0, 0, 0, 0.55) 74%,
+        rgba(0, 0, 0, 0.2) 88%,
+        transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    /* Softens the masked edge without a bright center ring */
+    filter: blur(10px);
+}
+
+#successApp.theme-light .success-bubble {
+    --bubble-fill-strong: rgba(122, 80, 247, 0.52);
+    --bubble-fill-mid: rgba(122, 80, 247, 0.46);
+    height: 155px;
+    transform: translate(-50%, 42%);
+    filter: blur(12px);
+    -webkit-mask-image: radial-gradient(
+        ellipse 100% 100% at 50% 100%,
+        #000 0%,
+        #000 38%,
+        rgba(0, 0, 0, 0.9) 56%,
+        rgba(0, 0, 0, 0.45) 76%,
+        rgba(0, 0, 0, 0.12) 92%,
+        transparent 100%
+    );
+    mask-image: radial-gradient(
+        ellipse 100% 100% at 50% 100%,
+        #000 0%,
+        #000 38%,
+        rgba(0, 0, 0, 0.9) 56%,
+        rgba(0, 0, 0, 0.45) 76%,
+        rgba(0, 0, 0, 0.12) 92%,
+        transparent 100%
+    );
+}
+
+#successApp.theme-dark .success-bubble {
+    --bubble-fill-strong: rgba(122, 80, 247, 0.72);
+    --bubble-fill-mid: rgba(122, 80, 247, 0.64);
+    height: 185px;
+    transform: translate(-50%, 38%);
+    filter: blur(14px);
+    -webkit-mask-image: radial-gradient(
+        ellipse 100% 100% at 50% 100%,
+        #000 0%,
+        #000 40%,
+        rgba(0, 0, 0, 0.92) 58%,
+        rgba(0, 0, 0, 0.5) 78%,
+        rgba(0, 0, 0, 0.15) 93%,
+        transparent 100%
+    );
+    mask-image: radial-gradient(
+        ellipse 100% 100% at 50% 100%,
+        #000 0%,
+        #000 40%,
+        rgba(0, 0, 0, 0.92) 58%,
+        rgba(0, 0, 0, 0.5) 78%,
+        rgba(0, 0, 0, 0.15) 93%,
+        transparent 100%
+    );
+}
+
+#successApp.theme-light .success-bubble,
+#successApp.theme-dark .success-bubble {
+    opacity: 1;
+}
+
+#successApp.theme-light .success-bubble {
+    animation: successBubbleBreathLight 2.8s ease-in-out infinite alternate;
+}
+
+#successApp.theme-dark .success-bubble {
+    animation: successBubbleBreathDark 2.8s ease-in-out infinite alternate;
+}
+
+@keyframes successBubbleBreathLight {
+    0% {
+        transform: translate(-50%, 42%) scale(0.88, 0.75);
+        opacity: 0.6;
+        filter: blur(16px);
+    }
+    100% {
+        transform: translate(-50%, 42%) scale(1.12, 1.18);
+        opacity: 1;
+        filter: blur(10px);
+    }
+}
+
+@keyframes successBubbleBreathDark {
+    0% {
+        transform: translate(-50%, 38%) scale(0.85, 0.72);
+        opacity: 0.58;
+        filter: blur(18px);
+    }
+    100% {
+        transform: translate(-50%, 38%) scale(1.14, 1.22);
+        opacity: 1;
+        filter: blur(12px);
+    }
+}
+
+/* ── CTA footer (Light & Dark) ─────────────────────────────────── */
+.success-footer {
+    position: relative;
+    z-index: 2;
+    flex-shrink: 0;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.success-cta {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 52px;
+    border: none;
+    border-radius: 100px;
+    background: var(--purple-primary, #7a50f7);
+    color: #ffffff;
+    font-family: 'General Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.success-cta:active {
+    transform: scale(0.98);
+    opacity: 0.92;
+}
+
+.success-home-indicator {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.success-home-indicator::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 134px;
+    height: 5px;
+    border-radius: 100px;
+    background: #000000;
+}

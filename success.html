@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ontop — Success Animation</title>
+
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@300,400,500,600,700,800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/handoff.css">
+    <link rel="stylesheet" href="css/success.css">
+</head>
+
+<body class="success-page">
+    <div class="hf-tabs" role="tablist" aria-label="Success theme variants">
+        <div class="hf-tab is-active" role="tab" aria-selected="true" data-theme="theme-light">Light</div>
+        <div class="hf-tab" role="tab" aria-selected="false" data-theme="theme-dark">Dark</div>
+        <div class="hf-tab" role="tab" aria-selected="false" data-theme="theme-overlay">Overlay</div>
+    </div>
+
+    <div class="hf-demo-shell">
+        <div class="device-frame">
+            <div class="app-bg-base" aria-hidden="true"></div>
+            <div class="app-bg-gradient" aria-hidden="true"></div>
+
+            <div class="success-back-shell" id="successBackShell" aria-hidden="true">
+                <iframe
+                    src="signup-flow.html?embed=1"
+                    title="Signup flow background"
+                    loading="lazy"
+                    tabindex="-1"></iframe>
+            </div>
+
+            <div class="app-container theme-light" id="successApp">
+                <div class="status-bar" id="statusBar">
+                    <span class="time">9:41</span>
+                    <div class="status-icons">
+                        <i class="ph-fill ph-cell-signal-full"></i>
+                        <i class="ph-fill ph-wifi-high"></i>
+                        <i class="ph-fill ph-battery-full"></i>
+                    </div>
+                </div>
+
+                <div class="success-stage" id="successStage">
+                    <div class="success-stage-bg" id="successStageBg" aria-hidden="true"></div>
+
+                    <div class="success-stage-content">
+                        <lottie-player
+                            id="successLottie"
+                            class="success-lottie"
+                            src="assets/new-succes-lottie.json"
+                            background="transparent"
+                            speed="1"
+                            autoplay>
+                        </lottie-player>
+
+                        <div class="success-text" id="successText">
+                            <h2>All set!</h2>
+                            <p>Your account is ready. You can now continue using Ontop.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="success-footer">
+                    <button type="button" class="success-cta">Continue</button>
+                    <div class="success-home-indicator" aria-hidden="true"></div>
+                </div>
+
+                <div class="success-bubble" aria-hidden="true"></div>
+            </div>
+        </div>
+
+        <div class="hf-demo-label">
+            <h3>Success</h3>
+            <p>
+                Tres variantes del Success screen (Light, Dark, Overlay) con Lottie animado,
+                tipografía del Design System y CTA en pantalla completa. Overlay simula el estado
+                sobre el flujo de signup.
+            </p>
+        </div>
+    </div>
+
+    <div class="hf-download-group" role="group" aria-label="Download animation files">
+        <span class="hf-download-group-label">
+            <i class="ph ph-sparkle"></i>
+            Success Animation
+        </span>
+        <a href="assets/new-succes-lottie.json" download="new-succes-lottie.json" class="hf-download-pill hf-download-json" aria-label="Download Lottie animation">
+            <i class="ph ph-download-simple"></i>
+            <span>Success Lottie</span>
+            <span class="hf-download-ext">JSON</span>
+        </a>
+    </div>
+
+    <script src="js/handoff-controls.js"></script>
+    <script>
+        const tabs = document.querySelectorAll('.hf-tab');
+        const appEl = document.getElementById('successApp');
+        const statusBar = document.getElementById('statusBar');
+        const successText = document.getElementById('successText');
+        const lottiePlayer = document.getElementById('successLottie');
+        const backShell = document.getElementById('successBackShell');
+        const backIframe = backShell.querySelector('iframe');
+
+        function setStatusBarForTheme(theme) {
+            if (theme === 'theme-light') {
+                statusBar.classList.remove('light');
+            } else {
+                statusBar.classList.add('light');
+            }
+        }
+
+        function replayTextAnimation() {
+            successText.style.animation = 'none';
+            successText.style.opacity = '0';
+            successText.style.transform = 'translateY(12px)';
+            void successText.offsetWidth;
+            successText.style.animation = '';
+            successText.style.opacity = '';
+            successText.style.transform = '';
+        }
+
+        function replayLottie() {
+            if (!lottiePlayer) return;
+            if (typeof lottiePlayer.seek === 'function') {
+                lottiePlayer.seek(0);
+                lottiePlayer.play();
+            } else {
+                lottiePlayer.load('assets/new-succes-lottie.json');
+            }
+        }
+
+        window.__hfReplay = function () {
+            replayLottie();
+            replayTextAnimation();
+
+            if (appEl.classList.contains('theme-overlay') && backIframe) {
+                const src = backIframe.src;
+                backIframe.src = 'about:blank';
+                requestAnimationFrame(() => {
+                    backIframe.src = src.includes('signup-flow') ? 'signup-flow.html?embed=1' : src;
+                });
+            }
+        };
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => {
+                    t.classList.remove('is-active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                tab.classList.add('is-active');
+                tab.setAttribute('aria-selected', 'true');
+
+                const newTheme = tab.getAttribute('data-theme');
+                appEl.className = `app-container ${newTheme}`;
+                setStatusBarForTheme(newTheme);
+                window.__hfReplay();
+            });
+        });
+
+        setStatusBarForTheme('theme-light');
+        window.__hfReplay();
+    </script>
+</body>
+
+</html>
