@@ -1,0 +1,271 @@
+/* css/login-behavior.css
+   ============================================================
+   Login behavior demo ("Welcome back")
+   - Returning-user login screen (Figma: B2C Onboarding revamp)
+   - Tapping any field raises the keyboard and the active field
+     scrolls into focus smoothly, keeping the CTA reachable
+   Reuses the iOS keyboard visuals from css/keyboard.css
+   (.kb-app / .kb-area / .kb-keyboard open/close behavior).
+   ============================================================ */
+
+:root {
+    --lb-input-bg: #1d1d3d;
+    --lb-input-border: rgba(234, 236, 240, 0.16);
+    --lb-placeholder: #98a2b3;
+    --lb-purple-link: #a68afa;
+    --lb-outline-border: #7a50f7;
+    --lb-primary-disabled-bg: #3d287b;
+    --lb-primary-disabled-text: #98a2b3;
+    --lb-biometric-bg: #2c2b5b;
+    --lb-bottom-h: 84px;   /* reserved space for the pinned secondary CTA */
+}
+
+/* The content area (and its Log in button) sits above the pinned
+   secondary CTA when closed, and above the keyboard when open. Only the
+   Log in button rises on focus — "New here?" keeps its bottom position. */
+#lbApp .kb-area { bottom: var(--lb-bottom-h); }
+#lbApp.is-kb-open .kb-area { bottom: 296px; }   /* 280px keyboard + 16px gap above it */
+
+/* ── Scroll region (hero + form) ───────────────────────── */
+.lb-scroll {
+    position: relative;      /* anchor offsetTop for scroll-into-focus math */
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 24px 16px 8px;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.lb-scroll::-webkit-scrollbar { display: none; }
+
+/* ── Brand block ───────────────────────────────────────── */
+.lb-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lb-logo {
+    width: 45px;
+    height: 32px;
+    object-fit: contain;
+    object-position: left center;
+}
+
+.lb-titles { display: flex; flex-direction: column; gap: 4px; }
+
+.lb-title {
+    font-family: 'General Sans', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 32px;
+    color: #fff;
+    letter-spacing: -0.2px;
+}
+
+.lb-subtitle {
+    font-family: 'General Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #eaecf0;
+}
+
+/* ── Form ──────────────────────────────────────────────── */
+.lb-form {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    align-items: center;
+}
+
+.lb-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+}
+
+.lb-field { display: flex; flex-direction: column; gap: 6px; }
+
+.lb-label {
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: #fcfcfd;
+}
+
+.lb-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: var(--lb-input-bg);
+    border: 1px solid var(--lb-input-border);
+    box-shadow: 0 1px 1px rgba(13, 12, 12, 0.05);
+    transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.lb-input-wrap.focused {
+    border-color: var(--purple-primary);
+    box-shadow: 0 0 0 3px rgba(122, 80, 247, 0.22);
+    background: #20204a;
+}
+
+.lb-input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: 'General Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #fff;
+    caret-color: var(--purple-primary);
+}
+
+.lb-input::placeholder { color: var(--lb-placeholder); }
+
+.lb-eye-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-left: 8px;
+    background: transparent;
+    border: none;
+    color: var(--lb-placeholder);
+    cursor: pointer;
+    transition: color 0.18s ease;
+}
+
+.lb-eye-btn:hover { color: #cdd2dc; }
+.lb-eye-btn i { font-size: 20px; }
+
+/* ── Forgot password link ──────────────────────────────── */
+.lb-forgot {
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    color: var(--lb-purple-link);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+}
+
+.lb-forgot i { font-size: 15px; }
+
+/* ── Biometric (FaceID) trigger ────────────────────────── */
+.lb-biometric {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--lb-biometric-bg);
+    border: none;
+    color: #ece9ff;
+    cursor: pointer;
+    transition: transform 0.16s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.lb-biometric:hover { background: #363573; }
+.lb-biometric:active { transform: scale(0.94); }
+.lb-biometric.pulse { animation: lbBioPulse 0.9s ease; }
+.lb-biometric svg { width: 28px; height: 28px; display: block; }
+
+@keyframes lbBioPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(166, 138, 250, 0.5); }
+    100% { box-shadow: 0 0 0 16px rgba(166, 138, 250, 0); }
+}
+
+/* ── Primary CTA block — rises with the keyboard ───────── */
+.lb-cta-block {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 16px 0;   /* the 16px gap to the keyboard is set on .kb-area (open) */
+    background: linear-gradient(to bottom,
+        rgba(8, 5, 26, 0) 0%,
+        rgba(8, 5, 26, 0.9) 45%,
+        rgba(8, 5, 26, 0.98) 100%);
+}
+
+/* ── Secondary CTA — pinned to the device bottom ───────── */
+.lb-bottom-fixed {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;               /* below the keyboard (z-30) so it gets covered */
+    min-height: var(--lb-bottom-h);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 16px 6px;   /* 10px gap between Log in and "New here?" (closed) */
+    background: rgba(8, 5, 26, 0.98);
+}
+
+.lb-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: 100px;
+    font-family: 'General Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.16s ease, box-shadow 0.2s ease, color 0.2s ease;
+}
+
+.lb-btn:active { transform: scale(0.985); }
+
+.lb-btn--primary {
+    border: none;
+    background: var(--lb-primary-disabled-bg);
+    color: var(--lb-primary-disabled-text);
+    pointer-events: none;
+}
+
+.lb-btn--primary.is-enabled {
+    background: var(--purple-primary);
+    color: #fff;
+    pointer-events: auto;
+    box-shadow: 0 6px 20px rgba(122, 80, 247, 0.35);
+}
+
+.lb-btn--outline {
+    background: transparent;
+    border: 1.5px solid var(--lb-outline-border);
+    color: #f3efff;
+}
+
+.lb-btn--outline:hover { background: rgba(122, 80, 247, 0.1); }
+
+/* ── Home indicator ────────────────────────────────────── */
+.lb-home-indicator {
+    width: 134px;
+    height: 5px;
+    margin: 6px auto 8px;
+    border-radius: 100px;
+    background: #fff;
+}

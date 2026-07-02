@@ -1,0 +1,3 @@
+- [Proyecto Animation Handoff](project-animation-handoff.md) — hub de animaciones de onboarding de Ontop; qué es y cómo está armado
+- [Pivote respecto al kiro spec](feedback-spec-vs-implementacion.md) — el spec dice iframe/handoff.html/10 anims, pero la implementación real es otra
+- [Luis Toro — perfil](user-luis-toro.md) — Product Designer en Ontop, dueño del proyecto
