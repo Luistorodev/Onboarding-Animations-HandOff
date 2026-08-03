@@ -133,6 +133,11 @@
                             </form>
                         </div>
 
+                        <!-- Jump-to-end FAB — visible while there's form below the fold -->
+                        <button class="kb-fab" id="kbFab" type="button" aria-label="Ir al final del formulario">
+                            <i class="ph ph-arrow-line-down"></i>
+                        </button>
+
                         <!-- CTA — sticks to the bottom of the visible area -->
                         <div class="kb-cta-wrap">
                             <button class="kb-cta" id="kbCta" type="button">Continue</button>
@@ -220,18 +225,47 @@
         const inputs    = document.querySelectorAll('.kb-input');
         const wraps     = document.querySelectorAll('.kb-input-wrap');
         const cta       = document.getElementById('kbCta');
+        const fab       = document.getElementById('kbFab');
+        const kbArea    = document.querySelector('.kb-area');
 
         let activeInput = null;
 
         // ── Keyboard open/close ────────────────────────────
         function openKeyboard() {
             app.classList.add('is-kb-open');
+            updateFab();
         }
 
         function closeKeyboard() {
             app.classList.remove('is-kb-open');
             activeInput = null;
+            updateFab();
         }
+
+        // ── Jump-to-end FAB ────────────────────────────────
+        // Shown while there is still form below the fold, hidden once
+        // the user reaches the end or the keyboard takes over the space.
+        function updateFab() {
+            const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 24;
+            const show = !atBottom && !app.classList.contains('is-kb-open');
+            fab.classList.toggle('is-visible', show);
+        }
+
+        scroller.addEventListener('scroll', updateFab, { passive: true });
+        window.addEventListener('resize', updateFab);
+        // .kb-area resizes when the keyboard slides — re-measure once it settles
+        kbArea.addEventListener('transitionend', (e) => {
+            if (e.propertyName === 'bottom') updateFab();
+        });
+
+        fab.addEventListener('click', () => {
+            if (activeInput) activeInput.blur();
+            closeKeyboard();
+            // Let .kb-area expand back before measuring the full scroll height
+            setTimeout(() => {
+                scroller.scrollTo({ top: scroller.scrollHeight, behavior: 'smooth' });
+            }, 60);
+        });
 
         // ── Center the focused input above the keyboard ────
         function scrollIntoCenter(el) {
@@ -324,11 +358,15 @@
             inputs.forEach(i => { i.value = ''; i.blur(); });
             scroller.scrollTo({ top: 0, behavior: 'smooth' });
             closeKeyboard();
+            updateFab();
             // Auto-demo: focus the 5th field after a beat to showcase the scroll
             setTimeout(() => {
                 inputs[4].focus();
             }, 600);
         };
+
+        // Initial FAB state (form starts at the top, so it shows in)
+        updateFab();
 
         // Auto-demo on load (helps reviewers see the behavior immediately)
         setTimeout(() => {
